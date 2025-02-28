@@ -8,9 +8,12 @@ interface BasicModuleInfo {
   version: string;
   buildVersion: string;
   remoteTypes: string;
+  remoteTypesZip: string;
+  remoteTypesAPI?: string;
   remotesInfo: Record<string, { matchedVersion: string }>;
   shared: Array<{
     sharedName: string;
+    version?: string;
     assets: StatsAssets;
   }>;
 }
@@ -18,6 +21,9 @@ interface BasicModuleInfo {
 export interface BasicProviderModuleInfo extends BasicModuleInfo {
   remoteEntry: string;
   remoteEntryType: RemoteEntryType;
+  // ssrRemoteEntry/ssrRemoteEntryType only appear while manifest has serveSideRemoteEntry field
+  ssrRemoteEntry?: string;
+  ssrRemoteEntryType?: RemoteEntryType;
   remoteManifest?: string;
   globalName: string;
   modules: Array<{
@@ -25,6 +31,7 @@ export interface BasicProviderModuleInfo extends BasicModuleInfo {
     modulePath?: string;
     assets: StatsAssets;
   }>;
+  prefetchInterface?: boolean;
   prefetchEntry?: string;
   prefetchEntryType?: RemoteEntryType;
 }
@@ -41,6 +48,7 @@ interface BasicProviderModuleInfoWithGetPublicPath
 
 export interface ManifestProvider {
   remoteEntry: string;
+  ssrRemoteEntry?: string;
   version?: string;
 }
 

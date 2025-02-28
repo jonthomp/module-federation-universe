@@ -1,20 +1,24 @@
-import { FederationHost } from './core';
 import {
-  getGlobalFederationInstance,
+  FederationHost,
+  type UserOptions,
   getGlobalFederationConstructor,
   setGlobalFederationInstance,
+  assert,
   setGlobalFederationConstructor,
-} from './global';
-import { UserOptions, FederationRuntimePlugin } from './type';
-import { assert } from './utils/logger';
+} from '@module-federation/runtime-core';
+import { getGlobalFederationInstance } from './utils';
 
-export { FederationHost } from './core';
-export { registerGlobalPlugins } from './global';
-export { loadScript } from '@module-federation/sdk';
-
-export type { Federation } from './global';
-export type { FederationRuntimePlugin };
-
+export {
+  loadScript,
+  loadScriptNode,
+  Module,
+  getRemoteEntry,
+  getRemoteInfo,
+  registerGlobalPlugins,
+  type FederationRuntimePlugin,
+  type Federation,
+} from '@module-federation/runtime-core';
+export { FederationHost };
 let FederationInstance: FederationHost | null = null;
 export function init(options: UserOptions): FederationHost {
   // Retrieve the same instance with the same name
@@ -36,28 +40,34 @@ export function init(options: UserOptions): FederationHost {
   }
 }
 
-export function loadRemote(
+export function loadRemote<T>(
   ...args: Parameters<FederationHost['loadRemote']>
-): ReturnType<FederationHost['loadRemote']> {
+): Promise<T | null> {
   assert(FederationInstance, 'Please call init first');
+  const loadRemote: typeof FederationInstance.loadRemote<T> =
+    FederationInstance.loadRemote;
   // eslint-disable-next-line prefer-spread
-  return FederationInstance.loadRemote.apply(FederationInstance, args);
+  return loadRemote.apply(FederationInstance, args);
 }
 
-export function loadShare(
+export function loadShare<T>(
   ...args: Parameters<FederationHost['loadShare']>
-): ReturnType<FederationHost['loadShare']> {
+): Promise<false | (() => T | undefined)> {
   assert(FederationInstance, 'Please call init first');
   // eslint-disable-next-line prefer-spread
-  return FederationInstance.loadShare.apply(FederationInstance, args);
+  const loadShare: typeof FederationInstance.loadShare<T> =
+    FederationInstance.loadShare;
+  return loadShare.apply(FederationInstance, args);
 }
 
-export function loadShareSync(
+export function loadShareSync<T>(
   ...args: Parameters<FederationHost['loadShareSync']>
-): ReturnType<FederationHost['loadShareSync']> {
+): () => T | never {
   assert(FederationInstance, 'Please call init first');
+  const loadShareSync: typeof FederationInstance.loadShareSync<T> =
+    FederationInstance.loadShareSync;
   // eslint-disable-next-line prefer-spread
-  return FederationInstance.loadShareSync.apply(FederationInstance, args);
+  return loadShareSync.apply(FederationInstance, args);
 }
 
 export function preloadRemote(
@@ -66,6 +76,26 @@ export function preloadRemote(
   assert(FederationInstance, 'Please call init first');
   // eslint-disable-next-line prefer-spread
   return FederationInstance.preloadRemote.apply(FederationInstance, args);
+}
+
+export function registerRemotes(
+  ...args: Parameters<FederationHost['registerRemotes']>
+): ReturnType<FederationHost['registerRemotes']> {
+  assert(FederationInstance, 'Please call init first');
+  // eslint-disable-next-line prefer-spread
+  return FederationInstance.registerRemotes.apply(FederationInstance, args);
+}
+
+export function registerPlugins(
+  ...args: Parameters<FederationHost['registerPlugins']>
+): ReturnType<FederationHost['registerRemotes']> {
+  assert(FederationInstance, 'Please call init first');
+  // eslint-disable-next-line prefer-spread
+  return FederationInstance.registerPlugins.apply(FederationInstance, args);
+}
+
+export function getInstance() {
+  return FederationInstance;
 }
 
 // Inject for debug

@@ -1,17 +1,22 @@
-const { registerPluginTSTranspiler } = require('nx/src/utils/nx-plugin.js');
-registerPluginTSTranspiler();
+// const { registerPluginTSTranspiler } = require('nx/src/utils/nx-plugin.js');
+// registerPluginTSTranspiler();
 
 const { composePlugins, withNx } = require('@nx/webpack');
 const { withReact } = require('@nx/react');
 
 const path = require('path');
 // const { withModuleFederation } = require('@nx/react/module-federation');
-const { ModuleFederationPlugin } = require('@module-federation/enhanced');
+const {
+  ModuleFederationPlugin,
+} = require('@module-federation/enhanced/webpack');
 
 module.exports = composePlugins(
   withNx(),
   withReact(),
   async (config, context) => {
+    config.watchOptions = {
+      ignored: ['**/node_modules/**', '**/@mf-types/**', '**/dist/**'],
+    };
     config.plugins.push(
       new ModuleFederationPlugin({
         name: 'runtime_remote2',
@@ -21,15 +26,41 @@ module.exports = composePlugins(
           './ButtonOldAnt': './src/components/ButtonOldAnt',
         },
         shared: {
-          lodash: {},
-          antd: {},
-          react: {},
-          'react/': {},
-          'react-dom': {},
-          'react-dom/': {},
+          lodash: {
+            singleton: true,
+            requiredVersion: '^4.0.0',
+          },
+          antd: {
+            singleton: true,
+            requiredVersion: '^4.0.0',
+          },
+          react: {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react/': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react-dom': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react-dom/': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+        },
+        shareStrategy: 'loaded-first',
+        dev: {
+          disableLiveReload: true,
         },
       }),
     );
+    if (!config.devServer) {
+      config.devServer = {};
+    }
+    config.devServer.host = '127.0.0.1';
     config.optimization.runtimeChunk = false;
     config.plugins.forEach((p) => {
       if (p.constructor.name === 'ModuleFederationPlugin') {
@@ -45,6 +76,7 @@ module.exports = composePlugins(
     // e.g. `config.plugins.push(new MyPlugin())`
     config.output = {
       ...config.output,
+      publicPath: 'http://127.0.0.1:3007/',
       scriptType: 'text/javascript',
     };
     config.optimization = {

@@ -3,10 +3,7 @@
 	Author Tobias Koppers @sokra and Zackary Jackson @ScriptedAlchemy
 */
 import type { Compiler } from 'webpack';
-import {
-  getWebpackPath,
-  normalizeWebpackPath,
-} from '@module-federation/sdk/normalize-webpack-path';
+import { normalizeWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
 
 // import * as RuntimeGlobals from 'webpack/lib/RuntimeGlobals';
 import FallbackDependency from './FallbackDependency';
@@ -16,11 +13,7 @@ import RemoteModule from './RemoteModule';
 import RemoteRuntimeModule from './RemoteRuntimeModule';
 import RemoteToExternalDependency from './RemoteToExternalDependency';
 import { parseOptions } from './options';
-import {
-  ExternalsType,
-  ContainerReferencePluginOptions,
-  RemotesConfig,
-} from '../../declarations/plugins/container/ContainerReferencePlugin';
+import { containerReferencePlugin } from '@module-federation/sdk';
 import FederationRuntimePlugin from './runtime/FederationRuntimePlugin';
 import schema from '../../schemas/container/ContainerReferencePlugin';
 import checkOptions from '../../schemas/container/ContainerReferencePlugin.check';
@@ -46,10 +39,12 @@ const validate = createSchemaValidation(
 const slashCode = '/'.charCodeAt(0);
 
 class ContainerReferencePlugin {
-  private _remoteType: ExternalsType;
-  private _remotes: [string, RemotesConfig][];
+  private _remoteType: containerReferencePlugin.ExternalsType;
+  private _remotes: [string, containerReferencePlugin.RemotesConfig][];
 
-  constructor(options: ContainerReferencePluginOptions) {
+  constructor(
+    options: containerReferencePlugin.ContainerReferencePluginOptions,
+  ) {
     validate(options);
 
     this._remoteType = options.remoteType;
@@ -76,7 +71,6 @@ class ContainerReferencePlugin {
   apply(compiler: Compiler): void {
     const { _remotes: remotes, _remoteType: remoteType } = this;
     new FederationRuntimePlugin().apply(compiler);
-
     /** @type {Record<string, string>} */
     const remoteExternals: Record<string, string> = {};
 
@@ -110,7 +104,6 @@ class ContainerReferencePlugin {
 
         compilation.dependencyFactories.set(
           FallbackDependency,
-          // @ts-ignore
           new FallbackModuleFactory(),
         );
 

@@ -5,31 +5,40 @@
 
 'use strict';
 import { normalizeWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
-import type { Dependency, Compilation } from 'webpack';
-import ContainerExposedDependency from './ContainerExposedDependency';
+import { logger } from '@module-federation/sdk';
+import {
+  getShortErrorMsg,
+  buildDescMap,
+  BUILD_001,
+} from '@module-federation/error-codes';
+import type { containerPlugin } from '@module-federation/sdk';
+import type { Compilation, Dependency } from 'webpack';
 import type {
+  InputFileSystem,
   LibIdentOptions,
   NeedBuildContext,
-  RequestShortener,
   ObjectDeserializerContext,
   ObjectSerializerContext,
-  WebpackOptions,
-  InputFileSystem,
+  RequestShortener,
   ResolverWithOptions,
+  WebpackOptions,
 } from 'webpack/lib/Module';
+import { PrefetchPlugin } from '@module-federation/data-prefetch/cli';
 import type WebpackError from 'webpack/lib/WebpackError';
-import { getFederationGlobalScope } from './runtime/utils';
 import { JAVASCRIPT_MODULE_TYPE_DYNAMIC } from '../Constants';
+import ContainerExposedDependency from './ContainerExposedDependency';
+import { getFederationGlobalScope } from './runtime/utils';
 
 const makeSerializable = require(
   normalizeWebpackPath('webpack/lib/util/makeSerializable'),
 ) as typeof import('webpack/lib/util/makeSerializable');
-const { sources: webpackSources } = require(
-  normalizeWebpackPath('webpack'),
-) as typeof import('webpack');
-const { AsyncDependenciesBlock, Template, Module, RuntimeGlobals } = require(
-  normalizeWebpackPath('webpack'),
-) as typeof import('webpack');
+const {
+  sources: webpackSources,
+  AsyncDependenciesBlock,
+  Template,
+  Module,
+  RuntimeGlobals,
+} = require(normalizeWebpackPath('webpack')) as typeof import('webpack');
 const StaticExportsDependency = require(
   normalizeWebpackPath('webpack/lib/dependencies/StaticExportsDependency'),
 ) as typeof import('webpack/lib/dependencies/StaticExportsDependency');
@@ -55,31 +64,48 @@ class ContainerEntryModule extends Module {
   private _exposes: [string, ExposeOptions][];
   private _shareScope: string;
   private _injectRuntimeEntry: string;
+  private _experiments: containerPlugin.ContainerPluginOptions['experiments'];
+  private _dataPrefetch: containerPlugin.ContainerPluginOptions['dataPrefetch'];
+
   /**
    * @param {string} name container entry name
    * @param {[string, ExposeOptions][]} exposes list of exposed modules
    * @param {string} shareScope name of the share scope
+   * @param {string} injectRuntimeEntry the path of injectRuntime file.
+   * @param {containerPlugin.ContainerPluginOptions['experiments']} experiments additional experiments options
+   * @param {containerPlugin.ContainerPluginOptions['dataPrefetch']} dataPrefetch whether enable dataPrefetch
    */
   constructor(
     name: string,
     exposes: [string, ExposeOptions][],
     shareScope: string,
     injectRuntimeEntry: string,
+    experiments: containerPlugin.ContainerPluginOptions['experiments'],
+    dataPrefetch: containerPlugin.ContainerPluginOptions['dataPrefetch'],
   ) {
     super(JAVASCRIPT_MODULE_TYPE_DYNAMIC, null);
     this._name = name;
     this._exposes = exposes;
     this._shareScope = shareScope;
     this._injectRuntimeEntry = injectRuntimeEntry;
+    this._experiments = experiments;
+    this._dataPrefetch = dataPrefetch;
   }
+
   /**
    * @param {ObjectDeserializerContext} context context
    * @returns {ContainerEntryModule} deserialized container entry module
    */
   static deserialize(context: ObjectDeserializerContext): ContainerEntryModule {
     const { read } = context;
-    const obj = new ContainerEntryModule(read(), read(), read(), read());
-    //@ts-ignore
+    const obj = new ContainerEntryModule(
+      read(),
+      read(),
+      read(),
+      read(),
+      read(),
+      read(),
+    );
     obj.deserialize(context);
     return obj;
   }
@@ -96,7 +122,7 @@ class ContainerEntryModule extends Module {
   override identifier(): string {
     return `container entry (${this._shareScope}) ${JSON.stringify(
       this._exposes,
-    )}`;
+    )} ${this._injectRuntimeEntry} ${JSON.stringify(this._experiments)} ${JSON.stringify(this._dataPrefetch)}`;
   }
   /**
    * @param {RequestShortener} requestShortener the request shortener
@@ -119,7 +145,6 @@ class ContainerEntryModule extends Module {
    * @param {function((WebpackError | null)=, boolean=): void} callback callback function, returns true, if the module needs a rebuild
    * @returns {void}
    */
-  // @ts-ignore typeof webpack/lib !== typeof webpack/types
   override needBuild(
     context: NeedBuildContext,
     callback: (
@@ -127,7 +152,6 @@ class ContainerEntryModule extends Module {
       arg1: boolean | undefined,
     ) => void,
   ): void {
-    const baseContext = context as NeedBuildContext;
     callback(null, !this.buildMeta);
   }
   /**
@@ -138,7 +162,6 @@ class ContainerEntryModule extends Module {
    * @param {function(WebpackError): void} callback callback function
    * @returns {void}
    */
-  // @ts-ignore typeof webpack/lib !== typeof webpack/types
   override build(
     options: WebpackOptions,
     compilation: Compilation,
@@ -152,7 +175,6 @@ class ContainerEntryModule extends Module {
       topLevelDeclarations: new Set(['moduleMap', 'get', 'init']),
     };
     this.buildMeta.exportsType = 'namespace';
-    //@ts-ignore
     this.clearDependenciesAndBlocks();
 
     for (const [name, options] of this._exposes) {
@@ -170,26 +192,20 @@ class ContainerEntryModule extends Module {
           name,
           index: idx++,
         };
-        //@ts-ignore
         block.addDependency(dep);
       }
-      //@ts-ignore
       this.addBlock(block);
     }
-    //@ts-ignore
     this.addDependency(
-      //@ts-ignore
       new StaticExportsDependency(
         ['get', 'init'],
         false,
       ) as unknown as Dependency,
     );
 
-    this.addDependency(
-      // @ts-ignore
-      new EntryDependency(this._injectRuntimeEntry),
-    );
-
+    if (!this._experiments?.federationRuntime) {
+      this.addDependency(new EntryDependency(this._injectRuntimeEntry));
+    }
     callback();
   }
 
@@ -197,8 +213,7 @@ class ContainerEntryModule extends Module {
    * @param {CodeGenerationContext} context context for code generation
    * @returns {CodeGenerationResult} result
    */
-  //@ts-ignore
-  override codeGeneration({ moduleGraph, chunkGraph, runtimeTemplate }) {
+  override codeGeneration({ moduleGraph, chunkGraph, runtimeTemplate }: any) {
     const sources = new Map();
     const runtimeRequirements = new Set([
       RuntimeGlobals.definePropertyGetters,
@@ -220,9 +235,13 @@ class ContainerEntryModule extends Module {
 
       let str;
       if (modules.some((m) => !m.module)) {
-        str = runtimeTemplate.throwMissingModuleErrorBlock({
-          request: modules.map((m) => m.request).join(', '),
-        });
+        logger.error(
+          getShortErrorMsg(BUILD_001, buildDescMap, {
+            exposeModules: modules.filter((m) => !m.module),
+            FEDERATION_WEBPACK_PATH: process.env['FEDERATION_WEBPACK_PATH'],
+          }),
+        );
+        process.exit(1);
       } else {
         str = `return ${runtimeTemplate.blockPromise({
           block,
@@ -232,7 +251,6 @@ class ContainerEntryModule extends Module {
         })}.then(${runtimeTemplate.returningFunction(
           runtimeTemplate.returningFunction(
             `(${modules
-              //@ts-ignore
               .map(({ module, request }) =>
                 runtimeTemplate.moduleRaw({
                   module,
@@ -254,16 +272,18 @@ class ContainerEntryModule extends Module {
         )}`,
       );
     }
-
     const initRuntimeDep = this.dependencies[1];
-    const initRuntimeModuleGetter = runtimeTemplate.moduleRaw({
-      module: moduleGraph.getModule(initRuntimeDep),
-      chunkGraph,
-      // @ts-expect-error
-      request: initRuntimeDep.userRequest,
-      weak: false,
-      runtimeRequirements,
-    });
+    // no runtime module getter needed if runtime is hoisted
+    const initRuntimeModuleGetter = this._experiments?.federationRuntime
+      ? ''
+      : runtimeTemplate.moduleRaw({
+          module: moduleGraph.getModule(initRuntimeDep),
+          chunkGraph,
+          // @ts-expect-error flaky type definition for Dependency
+          request: initRuntimeDep.userRequest,
+          weak: false,
+          runtimeRequirements,
+        });
     const federationGlobal = getFederationGlobalScope(
       RuntimeGlobals || ({} as typeof RuntimeGlobals),
     );
@@ -305,8 +325,9 @@ class ContainerEntryModule extends Module {
           '})',
         ],
       )};`,
+      this._dataPrefetch ? PrefetchPlugin.setRemoteIdentifier() : '',
       `${initRuntimeModuleGetter}`,
-      '',
+      this._dataPrefetch ? PrefetchPlugin.removeRemoteIdentifier() : '',
       '// This exports getters to disallow modifications',
       `${RuntimeGlobals.definePropertyGetters}(exports, {`,
       Template.indent([
@@ -345,9 +366,12 @@ class ContainerEntryModule extends Module {
     write(this._exposes);
     write(this._shareScope);
     write(this._injectRuntimeEntry);
+    write(this._experiments);
+    write(this._dataPrefetch);
     super.serialize(context);
   }
 }
+
 makeSerializable(
   ContainerEntryModule,
   'enhanced/lib/container/ContainerEntryModule',

@@ -12,7 +12,9 @@ const nextConfig = {
   },
   webpack(config, options) {
     const { isServer } = options;
-
+    config.watchOptions = {
+      ignored: ['**/node_modules/**', '**/@mf-types/**'],
+    };
     // used for testing build output snapshots
     const remotes = {
       checkout: `checkout@http://localhost:3002/_next/static/${
@@ -40,7 +42,13 @@ const nextConfig = {
         },
         shared: {
           'lodash/': {},
-          'antd/': {},
+          antd: {
+            requiredVersion: '5.19.1',
+            version: '5.19.1',
+          },
+          '@ant-design/': {
+            singleton: true,
+          },
         },
         extraOptions: {
           debug: false,

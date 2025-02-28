@@ -1,6 +1,6 @@
 {
   "name": "@module-federation/typescript",
-  "version": "3.1.1",
+  "version": "3.1.4",
   "description": "Webpack plugin to stream typescript for module federation apps/components",
   "license": "MIT",
   "type": "commonjs",
@@ -22,6 +22,11 @@
     "Zack Jackson <zackary.l.jackson@gmail.com> (https://github.com/ScriptedAlchemy)",
     "Pavan Divi <pavan.divi@outlook.com> (https://github.com/pavandv)"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/module-federation/core/",
+    "directory": "packages/typescript"
+  },
   "scripts": {
     "build": "tsc"
   },
@@ -34,7 +39,8 @@
     "react-dom": "*"
   },
   "dependencies": {
-    "node-fetch": "2.7.0"
+    "node-fetch": "2.7.0",
+    "lodash.get": "^4.4.2"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -52,8 +58,8 @@
   },
   "exports": {
     ".": {
-      "require": "./dist/src/index.js",
-      "types": "./dist/src/index.d.ts"
+      "types": "./dist/src/index.d.ts",
+      "require": "./dist/src/index.js"
     }
   }
 }

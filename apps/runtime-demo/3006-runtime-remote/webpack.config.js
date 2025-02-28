@@ -1,19 +1,33 @@
-const { registerPluginTSTranspiler } = require('nx/src/utils/nx-plugin.js');
-registerPluginTSTranspiler();
+// const { registerPluginTSTranspiler } = require('nx/src/utils/nx-plugin.js');
+// registerPluginTSTranspiler();
 
 const { composePlugins, withNx } = require('@nx/webpack');
 const { withReact } = require('@nx/react');
 
 const path = require('path');
 // const { withModuleFederation } = require('@nx/react/module-federation');
-const { ModuleFederationPlugin } = require('@module-federation/enhanced');
+const {
+  ModuleFederationPlugin,
+} = require('@module-federation/enhanced/webpack');
+const packageJson = require('./package.json');
 
+process.env.FEDERATION_DEBUG = true;
 module.exports = composePlugins(
   withNx(),
   withReact(),
   async (config, context) => {
-    // const webpack = require('/Users/bytedance/outter/universe/node_modules/.pnpm/webpack@5.89.0_@swc+core@1.3.99_esbuild@0.19.7/node_modules/webpack/lib/index.js')
+    config.watchOptions = {
+      ignored: ['**/node_modules/**', '**/@mf-types/**'],
+    };
     // const ModuleFederationPlugin = webpack.container.ModuleFederationPlugin;
+    config.watchOptions = {
+      ignored: ['**/dist/**'],
+    };
+    if (!config.devServer) {
+      config.devServer = {};
+    }
+    config.devServer.host = '127.0.0.1';
+
     config.plugins.push(
       new ModuleFederationPlugin({
         name: 'runtime_remote1',
@@ -24,13 +38,35 @@ module.exports = composePlugins(
           './WebpackSvg': './src/components/WebpackSvg',
           './WebpackPng': './src/components/WebpackPng',
         },
+        shareStrategy: 'loaded-first',
         shared: {
-          lodash: {},
-          antd: {},
-          react: {},
-          'react/': {},
-          'react-dom': {},
-          'react-dom/': {},
+          lodash: {
+            singleton: true,
+            requiredVersion: '^4.0.0',
+          },
+          antd: {
+            singleton: true,
+            requiredVersion: '^4.0.0',
+          },
+          react: {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react/': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react-dom': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+          'react-dom/': {
+            singleton: true,
+            requiredVersion: '^18.2.0',
+          },
+        },
+        dts: {
+          tsConfigPath: path.resolve(__dirname, 'tsconfig.app.json'),
         },
       }),
     );
@@ -53,12 +89,14 @@ module.exports = composePlugins(
     // e.g. `config.plugins.push(new MyPlugin())`
     config.output = {
       ...config.output,
+      publicPath: 'http://127.0.0.1:3006/',
       scriptType: 'text/javascript',
     };
     config.optimization = {
-      ...config.optimization,
+      // ...config.optimization,
       runtimeChunk: false,
       minimize: false,
+      moduleIds: 'named',
     };
     // const mf = await withModuleFederation(defaultConfig);
     return config;

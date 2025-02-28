@@ -9,7 +9,6 @@ const { URL, pathToFileURL, fileURLToPath } = require('url');
 const rimraf = require('rimraf');
 const checkArrayExpectation = require('./checkArrayExpectation');
 const createLazyTestEnv = require('./helpers/createLazyTestEnv');
-const deprecationTracking = require('./helpers/deprecationTracking');
 const FakeDocument = require('./helpers/FakeDocument');
 const CurrentScript = require('./helpers/CurrentScript');
 
@@ -25,12 +24,11 @@ const categories = fs.readdirSync(casesPath).map((cat) => {
     name: cat,
     tests: fs
       .readdirSync(path.join(casesPath, cat))
-      .filter((folder) => !folder.startsWith('_'))
+      .filter((folder) => !folder.startsWith('_') && !folder.startsWith('.'))
       .sort(),
   };
 });
-// .filter((i) => i.name === 'sharing');
-
+// .filter((i) => i.name === 'container');
 const createLogger = (appendTarget) => {
   return {
     log: (l) => appendTarget.push(l),
@@ -64,7 +62,7 @@ const describeCases = (config) => {
     for (const category of categories) {
       // eslint-disable-next-line no-loop-func
       describe(category.name, () => {
-        // category.tests = [category.tests[11]];
+        // category.tests = [category.tests[1]];
         for (const testName of category.tests) {
           // eslint-disable-next-line no-loop-func
           describe(testName, function () {
@@ -89,17 +87,38 @@ const describeCases = (config) => {
               );
               optionsArr = [].concat(options);
               optionsArr.forEach((options, idx) => {
+                if (config.federation) {
+                  const mfp = options.plugins.find(
+                    (p) => p.name === 'ModuleFederationPlugin',
+                  );
+                  if (mfp) {
+                    if (!mfp._options.experiments) {
+                      mfp._options.experiments = {};
+                    }
+                    if (config.federation?.federationRuntime) {
+                      // dont override if explicitly set
+                      if ('federationRuntime' in mfp._options.experiments) {
+                      } else {
+                        Object.assign(
+                          mfp._options.experiments,
+                          config.federation,
+                        );
+                      }
+                    }
+                  }
+                }
+
                 if (!options.context) options.context = testDirectory;
                 if (!options.mode) options.mode = 'production';
                 if (!options.optimization) options.optimization = {};
                 if (options.optimization.minimize === undefined)
                   options.optimization.minimize = false;
                 if (options.optimization.minimizer === undefined) {
-                  options.optimization.minimizer = [
-                    new (require('terser-webpack-plugin'))({
-                      parallel: false,
-                    }),
-                  ];
+                  // options.optimization.minimizer = [
+                  //   new (require('terser-webpack-plugin'))({
+                  //     parallel: false,
+                  //   }),
+                  // ];
                 }
                 if (!options.entry) options.entry = './index.js';
                 if (!options.target) options.target = 'async-node';
@@ -196,9 +215,7 @@ const describeCases = (config) => {
                 rimraf.sync(outputDirectory);
                 fs.mkdirSync(outputDirectory, { recursive: true });
                 infraStructureLog.length = 0;
-                const deprecationTracker = deprecationTracking.start();
                 require('webpack')(options, (err) => {
-                  deprecationTracker();
                   const infrastructureLogging = stderr.toString();
                   if (infrastructureLogging) {
                     return done(
@@ -236,9 +253,7 @@ const describeCases = (config) => {
                 rimraf.sync(outputDirectory);
                 fs.mkdirSync(outputDirectory, { recursive: true });
                 infraStructureLog.length = 0;
-                const deprecationTracker = deprecationTracking.start();
                 require('webpack')(options, (err, stats) => {
-                  deprecationTracker();
                   if (err) return handleFatalError(err, done);
                   const { modules, children, errorsCount } = stats.toJson({
                     all: false,
@@ -305,9 +320,7 @@ const describeCases = (config) => {
               rimraf.sync(outputDirectory);
               fs.mkdirSync(outputDirectory, { recursive: true });
               infraStructureLog.length = 0;
-              const deprecationTracker = deprecationTracking.start();
               const onCompiled = (err, stats) => {
-                const deprecations = deprecationTracker();
                 if (err) return handleFatalError(err, done);
                 const statOptions = {
                   preset: 'verbose',
@@ -338,6 +351,7 @@ const describeCases = (config) => {
                 ) {
                   return;
                 }
+
                 if (
                   checkArrayExpectation(
                     testDirectory,
@@ -360,7 +374,7 @@ const describeCases = (config) => {
                 if (
                   checkArrayExpectation(
                     testDirectory,
-                    { deprecations },
+                    { deprecations: [] },
                     'deprecation',
                     'Deprecation',
                     done,

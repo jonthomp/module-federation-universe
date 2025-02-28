@@ -1,20 +1,7 @@
 /**
- * Extracts the URL and global from the module federation utilities.
- * @module @module-federation/utilities/src/utils/pure
- */
-export { extractUrlAndGlobal } from '@module-federation/utilities';
-
-/**
- * Injects a script from the module federation utilities.
- * @module @module-federation/utilities/src/utils/common
- */
-export { injectScript } from '@module-federation/utilities';
-
-/**
  * Flushes chunks from the module federation node utilities.
  * @module @module-federation/node/utils
  */
-// @ts-ignore
 export { flushChunks } from '@module-federation/node/utils';
 
 /**
@@ -33,16 +20,16 @@ export type { FlushedChunksProps } from './flushedChunks';
  * If the function is called on the server side, it imports the revalidate function from the module federation node utilities and returns the result of calling that function.
  * @returns {Promise<boolean>} A promise that resolves with a boolean.
  */
-export const revalidate = (
+export const revalidate = function (
   fetchModule: any = undefined,
-  force: boolean = false,
-) => {
+  force = false,
+): Promise<boolean> {
   if (typeof window !== 'undefined') {
     console.error('revalidate should only be called server-side');
     return Promise.resolve(false);
+  } else {
+    return import('@module-federation/node/utils').then(function (utils) {
+      return utils.revalidate(fetchModule, force);
+    });
   }
-  // @ts-ignore
-  return import('@module-federation/node/utils').then((utils) => {
-    return utils.revalidate(fetchModule, force);
-  });
 };

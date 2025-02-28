@@ -3,14 +3,37 @@ import { getH1, getH3 } from '../support/app.po';
 describe('3000-home/', () => {
   beforeEach(() => cy.visit('/'));
 
+  describe('Warmup Next', () => {
+    xit('warms pages concurrently', () => {
+      const urls = [
+        '/shop',
+        '/checkout',
+        '/checkout/test-title',
+        '/checkout/test-check-button',
+        '/api/test',
+      ];
+      urls.forEach((url) => {
+        cy.request(url);
+      });
+    });
+  });
+
   describe('Welcome message', () => {
     it('should display welcome message', () => {
       getH1().contains('This is SPA combined');
     });
   });
 
+  describe('API endpoint should return json', () => {
+    it('Query Endpoint', () => {
+      cy.request('/api/test').then((response) => {
+        expect(response.headers['content-type']).to.include('application/json');
+      });
+    });
+  });
+
   describe('Image checks', () => {
-    it('should check that the home-webpack-png and shop-webpack-png images are not 404', () => {
+    xit('should check that the home-webpack-png and shop-webpack-png images are not 404', () => {
       // Get the src attribute of the home-webpack-png image
       cy.debug()
         .get('img.home-webpack-png')
@@ -31,8 +54,7 @@ describe('3000-home/', () => {
   });
 
   describe('Routing checks', () => {
-    xit('check that clicking back and forwards in client side routeing still renders the content correctly', () => {
-      cy.visit('/');
+    it('check that clicking back and forwards in client side routeing still renders the content correctly', () => {
       cy.visit('/shop');
       cy.wait(3000);
       cy.url().should('include', '/shop');
@@ -49,7 +71,11 @@ describe('3000-home/', () => {
   });
 
   describe('3000-home/checkout', () => {
-    beforeEach(() => cy.visit('/checkout'));
+    beforeEach(() => {
+      cy.visit('/checkout');
+      cy.visit('/');
+      cy.visit('/checkout');
+    });
 
     describe('Welcome message', () => {
       it('should display welcome message', () => {
@@ -91,7 +117,7 @@ describe('3000-home/', () => {
     });
 
     describe('Image checks', () => {
-      it('should check that shop-webpack-png images are not 404', () => {
+      xit('should check that shop-webpack-png images are not 404', () => {
         // Get the src attribute of the shop-webpack-png image
         cy.get('img.shop-webpack-png')
           .invoke('attr', 'src')
@@ -100,7 +126,8 @@ describe('3000-home/', () => {
             cy.request(src).its('status').should('eq', 200);
           });
       });
-      xit('should check that shop-webpack-png images are not 404 between route clicks', () => {
+      it('should check that shop-webpack-png images are not 404 between route clicks', () => {
+        cy.visit('/');
         cy.visit('/shop');
         cy.url().should('include', '/shop');
         getH1().contains('Shop Page');

@@ -1,4 +1,543 @@
-# [3.1.0](https://github.com/module-federation/universe/compare/utils-3.0.2...utils-3.1.0) (2023-10-26)
+# @module-federation/utilities
+
+## 3.1.45
+
+### Patch Changes
+
+- Updated dependencies [35d925b]
+- Updated dependencies [35d925b]
+- Updated dependencies [8acd217]
+  - @module-federation/sdk@0.9.1
+
+## 3.1.44
+
+### Patch Changes
+
+- @module-federation/sdk@0.9.0
+
+## 3.1.43
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.12
+
+## 3.1.42
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.11
+
+## 3.1.41
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.10
+
+## 3.1.40
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.9
+
+## 3.1.39
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.8
+
+## 3.1.38
+
+### Patch Changes
+
+- Updated dependencies [835b09c]
+- Updated dependencies [336f3d8]
+- Updated dependencies [4fd33fb]
+  - @module-federation/sdk@0.8.7
+
+## 3.1.37
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.6
+
+## 3.1.36
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.5
+
+## 3.1.35
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.4
+
+## 3.1.34
+
+### Patch Changes
+
+- Updated dependencies [8e172c8]
+  - @module-federation/sdk@0.8.3
+
+## 3.1.33
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.2
+
+## 3.1.32
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.1
+
+## 3.1.31
+
+### Patch Changes
+
+- @module-federation/sdk@0.8.0
+
+## 3.1.30
+
+### Patch Changes
+
+- @module-federation/sdk@0.7.7
+
+## 3.1.29
+
+### Patch Changes
+
+- @module-federation/sdk@0.7.6
+
+## 3.1.28
+
+### Patch Changes
+
+- @module-federation/sdk@0.7.5
+
+## 3.1.27
+
+### Patch Changes
+
+- @module-federation/sdk@0.7.4
+
+## 3.1.26
+
+### Patch Changes
+
+- 4ab9295: disable package json generation during build
+- Updated dependencies [4ab9295]
+  - @module-federation/sdk@0.7.3
+
+## 3.1.25
+
+### Patch Changes
+
+- @module-federation/sdk@0.7.2
+
+## 3.1.24
+
+### Patch Changes
+
+- Updated dependencies [6db4c5f]
+  - @module-federation/sdk@0.7.1
+
+## 3.1.23
+
+### Patch Changes
+
+- Updated dependencies [879ad87]
+- Updated dependencies [4eb09e7]
+- Updated dependencies [206b56d]
+  - @module-federation/sdk@0.7.0
+
+## 3.1.22
+
+### Patch Changes
+
+- Updated dependencies [f779188]
+- Updated dependencies [024df60]
+  - @module-federation/sdk@0.6.16
+
+## 3.1.21
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.15
+
+## 3.1.20
+
+### Patch Changes
+
+- Updated dependencies [ad605d2]
+  - @module-federation/sdk@0.6.14
+
+## 3.1.19
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.13
+
+## 3.1.18
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.12
+
+## 3.1.17
+
+### Patch Changes
+
+- Updated dependencies [d5a3072]
+  - @module-federation/sdk@0.6.11
+
+## 3.1.16
+
+### Patch Changes
+
+- Updated dependencies [22a3b83]
+  - @module-federation/sdk@0.6.10
+
+## 3.1.15
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.9
+
+## 3.1.14
+
+### Patch Changes
+
+- Updated dependencies [32db0ac]
+  - @module-federation/sdk@0.6.8
+
+## 3.1.13
+
+### Patch Changes
+
+- Updated dependencies [9e32644]
+  - @module-federation/sdk@0.6.7
+
+## 3.1.12
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.6
+
+## 3.1.11
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.5
+
+## 3.1.10
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.4
+
+## 3.1.9
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.3
+
+## 3.1.8
+
+### Patch Changes
+
+- @module-federation/sdk@0.6.2
+
+## 3.1.7
+
+### Patch Changes
+
+- Updated dependencies [2855583]
+- Updated dependencies [813680f]
+  - @module-federation/sdk@0.6.1
+
+## 3.1.6
+
+### Patch Changes
+
+- Updated dependencies [1d9bb77]
+  - @module-federation/sdk@0.6.0
+
+## 3.1.5
+
+### Patch Changes
+
+- Updated dependencies [b90fa7d]
+  - @module-federation/sdk@0.5.2
+
+## 3.1.4
+
+### Patch Changes
+
+- @module-federation/sdk@0.5.1
+
+## 3.1.3
+
+### Patch Changes
+
+- Updated dependencies [8378a77]
+  - @module-federation/sdk@0.5.0
+
+## 3.1.2
+
+### Patch Changes
+
+- Updated dependencies [a6e2bed]
+- Updated dependencies [a6e2bed]
+  - @module-federation/sdk@0.4.0
+
+## 3.1.1
+
+### Patch Changes
+
+- @module-federation/sdk@0.3.5
+
+## 3.1.0
+
+### Minor Changes
+
+- bb1e471: Expose esm from the package json
+
+### Patch Changes
+
+- @module-federation/sdk@0.3.4
+
+## 3.0.39
+
+### Patch Changes
+
+- @module-federation/sdk@0.3.3
+
+## 3.0.38
+
+### Patch Changes
+
+- @module-federation/sdk@0.3.2
+
+## 3.0.37
+
+### Patch Changes
+
+- @module-federation/sdk@0.3.1
+
+## 3.0.36
+
+### Patch Changes
+
+- Updated dependencies [fa37cc4]
+  - @module-federation/sdk@0.3.0
+
+## 3.0.35
+
+### Patch Changes
+
+- @module-federation/sdk@0.2.8
+
+## 3.0.34
+
+### Patch Changes
+
+- Updated dependencies [b00ef13]
+  - @module-federation/sdk@0.2.7
+
+## 3.0.33
+
+### Patch Changes
+
+- Updated dependencies [91bf689]
+  - @module-federation/sdk@0.2.6
+
+## 3.0.32
+
+### Patch Changes
+
+- Updated dependencies [8cce571]
+  - @module-federation/sdk@0.2.5
+
+## 3.0.31
+
+### Patch Changes
+
+- Updated dependencies [09b792d]
+- Updated dependencies [09b792d]
+  - @module-federation/sdk@0.2.4
+
+## 3.0.30
+
+### Patch Changes
+
+- Updated dependencies [32f26af]
+- Updated dependencies [32f26af]
+  - @module-federation/sdk@0.2.3
+
+## 3.0.29
+
+### Patch Changes
+
+- @module-federation/sdk@0.2.2
+
+## 3.0.28
+
+### Patch Changes
+
+- Updated dependencies [88445e7]
+  - @module-federation/sdk@0.2.1
+
+## 3.0.27
+
+### Patch Changes
+
+- @module-federation/sdk@0.2.0
+
+## 3.0.26
+
+### Patch Changes
+
+- Updated dependencies [88900ad]
+  - @module-federation/sdk@0.1.21
+
+## 3.0.25
+
+### Patch Changes
+
+- Updated dependencies [685c607]
+- Updated dependencies [e8e0969]
+- Updated dependencies [349c381]
+  - @module-federation/sdk@0.1.20
+
+## 3.0.24
+
+### Patch Changes
+
+- Updated dependencies [031454d]
+- Updated dependencies [b0a31a7]
+- Updated dependencies [a2bfb9b]
+  - @module-federation/sdk@0.1.19
+
+## 3.0.23
+
+### Patch Changes
+
+- Updated dependencies [80af3f3]
+  - @module-federation/sdk@0.1.18
+
+## 3.0.22
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.17
+
+## 3.0.21
+
+### Patch Changes
+
+- Updated dependencies [364f2bc]
+  - @module-federation/sdk@0.1.16
+
+## 3.0.20
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.15
+
+## 3.0.19
+
+### Patch Changes
+
+- Updated dependencies [103b2b8]
+  - @module-federation/sdk@0.1.14
+
+## 3.0.18
+
+### Patch Changes
+
+- Updated dependencies [2e52e51]
+  - @module-federation/sdk@0.1.13
+
+## 3.0.17
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.12
+
+## 3.0.16
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.11
+
+## 3.0.15
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.10
+
+## 3.0.14
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.9
+
+## 3.0.13
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.8
+
+## 3.0.12
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.7
+
+## 3.0.11
+
+### Patch Changes
+
+- 72c7b80: chore: fix release tag
+- Updated dependencies [72c7b80]
+  - @module-federation/sdk@0.1.6
+
+## 3.0.10
+
+### Patch Changes
+
+- Updated dependencies [ca271ab]
+- Updated dependencies [1a9c6e7]
+  - @module-federation/sdk@0.1.5
+
+## 3.0.9
+
+### Patch Changes
+
+- Updated dependencies [8f3a440]
+- Updated dependencies [2f697b9]
+  - @module-federation/sdk@0.1.4
+
+## 3.0.8
+
+### Patch Changes
+
+- @module-federation/sdk@0.1.3
+
+## 3.0.7
+
+### Patch Changes
+
+- f9335c7: no default expose when skip sharing next internals enabled
+- Updated dependencies [c8c0ad2]
+  - @module-federation/sdk@0.1.2
+
+## 3.0.6
+
+### Patch Changes
+
+- a050645: Remove delegate module code from utils
 
 ## 3.0.5
 
@@ -8,21 +547,21 @@
 
 ### Bug Fixes
 
-- **deps:** update dependency axios to v1.5.1 ([ae9a06a](https://github.com/module-federation/universe/commit/ae9a06a0cc35fad27a0b493a25370b92617c39fb))
-- **deps:** update dependency core-js to v3.33.0 ([30894ca](https://github.com/module-federation/universe/commit/30894cafbe5dea4350dc7c633548038d7ec5f8a8))
-- **deps:** update dependency typedoc to v0.25.2 ([46c6524](https://github.com/module-federation/universe/commit/46c65247e187cee9e15625402c1570ac351bb1fe))
-- **deps:** update dependency undici to v5.25.2 ([da3e539](https://github.com/module-federation/universe/commit/da3e539a41ed23ccb5086b1dd428fbee0f8d652c))
-- **deps:** update dependency undici to v5.25.4 ([1d4f91e](https://github.com/module-federation/universe/commit/1d4f91ec93da4326c8a42eef28f150d5d09738bb))
-- **deps:** update dependency undici to v5.26.2 [security] ([410a8b8](https://github.com/module-federation/universe/commit/410a8b8bd1558dfb5119ae10941d2b3816a0d0e0))
-- **deps:** update dependency unplugin to v1.5.0 ([936b3f8](https://github.com/module-federation/universe/commit/936b3f8d8061fd9d481d1788fb35b88588928d14))
-- override semantic-release-plugin-decorators ([18675de](https://github.com/module-federation/universe/commit/18675defef65570d2b3bb6a9caa3fd039badee29))
-- switch to @goestav/nx-semantic-release ([63a3350](https://github.com/module-federation/universe/commit/63a3350a6a1a12235e3c9f1e7c724d54f0476356))
+- **deps:** update dependency axios to v1.5.1 ([ae9a06a](https://github.com/module-federation/core/commit/ae9a06a0cc35fad27a0b493a25370b92617c39fb))
+- **deps:** update dependency core-js to v3.33.0 ([30894ca](https://github.com/module-federation/core/commit/30894cafbe5dea4350dc7c633548038d7ec5f8a8))
+- **deps:** update dependency typedoc to v0.25.2 ([46c6524](https://github.com/module-federation/core/commit/46c65247e187cee9e15625402c1570ac351bb1fe))
+- **deps:** update dependency undici to v5.25.2 ([da3e539](https://github.com/module-federation/core/commit/da3e539a41ed23ccb5086b1dd428fbee0f8d652c))
+- **deps:** update dependency undici to v5.25.4 ([1d4f91e](https://github.com/module-federation/core/commit/1d4f91ec93da4326c8a42eef28f150d5d09738bb))
+- **deps:** update dependency undici to v5.26.2 [security] ([410a8b8](https://github.com/module-federation/core/commit/410a8b8bd1558dfb5119ae10941d2b3816a0d0e0))
+- **deps:** update dependency unplugin to v1.5.0 ([936b3f8](https://github.com/module-federation/core/commit/936b3f8d8061fd9d481d1788fb35b88588928d14))
+- override semantic-release-plugin-decorators ([18675de](https://github.com/module-federation/core/commit/18675defef65570d2b3bb6a9caa3fd039badee29))
+- switch to @goestav/nx-semantic-release ([63a3350](https://github.com/module-federation/core/commit/63a3350a6a1a12235e3c9f1e7c724d54f0476356))
 
 ### Features
 
-- fork module federation ([0ad7430](https://github.com/module-federation/universe/commit/0ad7430f6170458a47144be392133b7b2fa1ade0))
-- improved async init ([ae3a450](https://github.com/module-federation/universe/commit/ae3a4503ff9de86492b13029d6334b281ddd9493))
-- new actions, remove gpt integration ([370229e](https://github.com/module-federation/universe/commit/370229e02cc352fcfaeaa0f3cf1f9f2d4966d1bb))
+- fork module federation ([0ad7430](https://github.com/module-federation/core/commit/0ad7430f6170458a47144be392133b7b2fa1ade0))
+- improved async init ([ae3a450](https://github.com/module-federation/core/commit/ae3a4503ff9de86492b13029d6334b281ddd9493))
+- new actions, remove gpt integration ([370229e](https://github.com/module-federation/core/commit/370229e02cc352fcfaeaa0f3cf1f9f2d4966d1bb))
 
 # Changelog
 

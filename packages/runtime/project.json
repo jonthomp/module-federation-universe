@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/runtime/src",
   "projectType": "library",
+  "tags": ["type:pkg"],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -13,17 +14,17 @@
         "main": "packages/runtime/src/index.ts",
         "additionalEntryPoints": [
           "packages/runtime/src/types.ts",
-          "packages/runtime/src/helpers.ts"
+          "packages/runtime/src/helpers.ts",
+          "packages/runtime/src/embedded.ts"
         ],
         "tsConfig": "packages/runtime/tsconfig.lib.json",
         "assets": [],
+        "external": ["@module-federation/*"],
         "project": "packages/runtime/package.json",
         "compiler": "swc",
         "rollupConfig": "packages/runtime/rollup.config.js",
         "format": ["cjs", "esm"],
-        "external": ["@module-federation/*"],
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "updateBuildableProjectDepsInPackageJson": true
+        "generatePackageJson": false
       },
       "dependsOn": [
         {
@@ -33,7 +34,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
@@ -76,12 +77,11 @@
         "parallel": false,
         "commands": [
           {
-            "command": "vitest run -c packages/runtime/vitest.config.ts",
+            "command": "vitest run -u -c packages/runtime/vitest.config.ts",
             "forwardAllArgs": false
           }
         ]
       }
     }
-  },
-  "tags": ["package"]
+  }
 }

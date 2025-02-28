@@ -1,4 +1,4 @@
-import { safeWrapper } from '../../src/utils';
+import { safeWrapper } from '@module-federation/runtime-core';
 import fs from 'fs';
 import path from 'path';
 
@@ -77,6 +77,9 @@ function injector(current: Function, methodName: string) {
         // vitest 无法让 jsdom 和当前环境处于同一个执行环境
         if (!preload) {
           new Function(execScriptContent)();
+        }
+        if (element && element.onload) {
+          element.onload.call(element);
         }
         // eslint-disable-next-line prefer-rest-params
         oriArguments[index] = nEl;

@@ -4,9 +4,13 @@ on:
   issues:
     types: [labeled]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   reply-labeled:
-    if: github.repository == 'module-federation/universe'
+    if: github.repository == 'module-federation/core'
     runs-on: ubuntu-latest
     steps:
       - name: contribution welcome

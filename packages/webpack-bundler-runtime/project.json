@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/webpack-bundler-runtime/src",
   "projectType": "library",
+  "tags": ["type:pkg"],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -14,14 +15,12 @@
         "tsConfig": "packages/webpack-bundler-runtime/tsconfig.lib.json",
         "assets": [],
         "project": "packages/webpack-bundler-runtime/package.json",
-        "compiler": "swc",
+        "compiler": "tsc",
         "format": ["cjs", "esm"],
         "additionalEntryPoints": [
           "packages/webpack-bundler-runtime/src/constant.ts"
         ],
-        "external": ["@module-federation/*"],
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "updateBuildableProjectDepsInPackageJson": true,
+        "generatePackageJson": false,
         "rollupConfig": "packages/webpack-bundler-runtime/rollup.config.js"
       },
       "dependsOn": [
@@ -32,7 +31,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
@@ -71,6 +70,5 @@
         ]
       }
     }
-  },
-  "tags": ["package"]
+  }
 }

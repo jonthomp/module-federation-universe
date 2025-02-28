@@ -11,7 +11,7 @@ import { getFederationGlobalScope } from '../container/runtime/utils';
 const { Template, RuntimeGlobals, RuntimeModule } = require(
   normalizeWebpackPath('webpack'),
 ) as typeof import('webpack');
-const { compareModulesByIdentifier, compareStrings } = require(
+const { compareModulesByIdentifier } = require(
   normalizeWebpackPath('webpack/lib/util/comparators'),
 ) as typeof import('webpack/lib/util/comparators');
 
@@ -29,17 +29,13 @@ class ShareRuntimeModule extends RuntimeModule {
     if (!compilation) {
       throw new Error('Compilation is undefined');
     }
-    const {
-      runtimeTemplate,
-      codeGenerationResults,
-      outputOptions: { uniqueName, ignoreBrowserWarnings },
-    } = compilation;
+    const { runtimeTemplate, codeGenerationResults } = compilation;
     const chunkGraph: ChunkGraph | undefined = this.chunkGraph;
     if (!chunkGraph) {
       throw new Error('ChunkGraph is undefined');
     }
     const initCodePerScope: Map<string, Map<number, Set<string>>> = new Map();
-    let sharedInitOptionsStr = '';
+    const sharedInitOptions: Record<string, any[]> = {};
 
     for (const chunk of this.chunk?.getAllReferencedChunks() || []) {
       if (!chunk) {
@@ -48,7 +44,6 @@ class ShareRuntimeModule extends RuntimeModule {
       const modules = chunkGraph.getOrderedChunkModulesIterableBySourceType(
         chunk,
         'share-init',
-        // @ts-ignore
         compareModulesByIdentifier,
       );
       if (!modules) continue;
@@ -77,17 +72,39 @@ class ShareRuntimeModule extends RuntimeModule {
           'share-init-option',
         );
         if (sharedOption) {
-          sharedInitOptionsStr += `
-					"${sharedOption.name}" : {
-						version: ${sharedOption.version},
-						get: ${sharedOption.getter},
-						scope: ${JSON.stringify(sharedOption.shareScope)},
-            shareConfig: ${JSON.stringify(sharedOption.shareConfig)}
-					},
-					`;
+          sharedInitOptions[sharedOption.name] =
+            sharedInitOptions[sharedOption.name] || [];
+          const isSameVersion = sharedInitOptions[sharedOption.name].find(
+            (s) => s.version === sharedOption.version,
+          );
+          if (!isSameVersion) {
+            sharedInitOptions[sharedOption.name].push(sharedOption);
+          }
         }
       }
     }
+
+    const sharedInitOptionsStr = Object.keys(sharedInitOptions).reduce(
+      (sum, sharedName) => {
+        const sharedOptions = sharedInitOptions[sharedName];
+        let str = '';
+        sharedOptions.forEach((sharedOption) => {
+          str += `{${Template.indent([
+            `version: ${sharedOption.version},`,
+            `get: ${sharedOption.getter},`,
+            `scope: ${JSON.stringify(sharedOption.shareScope)},`,
+            `shareConfig: ${JSON.stringify(sharedOption.shareConfig)}`,
+          ])}},`;
+        });
+        str = `[${str}]`;
+
+        sum += `${Template.indent([`"${sharedName}": ${str},`])}`;
+
+        return sum;
+      },
+      '',
+    );
+
     const federationGlobal = getFederationGlobalScope(
       RuntimeGlobals || ({} as typeof RuntimeGlobals),
     );

@@ -1,8 +1,8 @@
 import { attachShareScopeMap } from './attachShareScopeMap';
 import type { RemoteEntryExports } from './types';
 import { RemotesOptions } from './types';
-import { decodeName } from '@module-federation/sdk';
-import { ENCODE_NAME_PREFIX } from './constant';
+import { FEDERATION_SUPPORTED_TYPES } from './constant';
+import { decodeName, ENCODE_NAME_PREFIX } from '@module-federation/sdk';
 
 export function remotes(options: RemotesOptions) {
   const {
@@ -105,10 +105,22 @@ export function remotes(options: RemotesOptions) {
           );
 
           const remoteModuleName = remoteName + data[1].slice(1);
-          return webpackRequire.federation.instance!.loadRemote(
-            remoteModuleName,
-            { loadFactory: false, from: 'build' },
-          );
+          const instance = webpackRequire.federation.instance!;
+          const loadRemote = () =>
+            webpackRequire.federation.instance!.loadRemote(remoteModuleName, {
+              loadFactory: false,
+              from: 'build',
+            });
+
+          if (instance.options.shareStrategy === 'version-first') {
+            return Promise.all(
+              instance.sharedHandler.initializeSharing(data[0]),
+            ).then(() => {
+              return loadRemote();
+            });
+          }
+
+          return loadRemote();
         } catch (error) {
           onError(error as Error);
         }
@@ -116,7 +128,7 @@ export function remotes(options: RemotesOptions) {
 
       const useRuntimeLoad =
         remoteInfos.length === 1 &&
-        ['script'].includes(remoteInfos[0].externalType) &&
+        FEDERATION_SUPPORTED_TYPES.includes(remoteInfos[0].externalType) &&
         remoteInfos[0].name;
 
       if (useRuntimeLoad) {

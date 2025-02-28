@@ -1,4 +1,9 @@
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Zackary Jackson @ScriptedAlchemy
+*/
 import { normalizeWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
+import { moduleFederationPlugin } from '@module-federation/sdk';
 import type {
   Compiler,
   Compilation,
@@ -19,19 +24,16 @@ type CompilationHooksJavascriptModulesPlugin = ReturnType<
 >;
 type RenderStartup = CompilationHooksJavascriptModulesPlugin['renderStartup'];
 
-type InferStartupRenderContext<T> = T extends SyncWaterfallHook<
-  [infer Source, infer Module, infer StartupRenderContext]
->
-  ? StartupRenderContext
-  : never;
+type InferStartupRenderContext<T> =
+  T extends SyncWaterfallHook<
+    [infer Source, infer Module, infer StartupRenderContext]
+  >
+    ? StartupRenderContext
+    : never;
 
 type StartupRenderContext = InferStartupRenderContext<RenderStartup>;
 
-export interface Options {
-  eager?: RegExp | ((module: Module) => boolean);
-  excludeChunk?: (chunk: Chunk) => boolean;
-}
-
+export type Options = moduleFederationPlugin.AsyncBoundaryOptions;
 class AsyncEntryStartupPlugin {
   private _options: Options;
   private _runtimeChunks = new Map<string | number, Chunk | undefined>();
@@ -70,15 +72,14 @@ class AsyncEntryStartupPlugin {
   getChunkByName(
     compilation: Compilation,
     dependOn: string[],
-  ): (string | number | undefined)[] {
-    const byname = [];
+    byname: Set<Chunk>,
+  ) {
     for (const name of dependOn) {
       const chunk = compilation.namedChunks.get(name);
       if (chunk) {
-        byname.push(chunk.id || chunk.name);
+        byname.add(chunk);
       }
     }
-    return byname;
   }
 
   private _handleRenderStartup(compiler: Compiler, compilation: Compilation) {
@@ -118,36 +119,59 @@ class AsyncEntryStartupPlugin {
 
           const requirements =
             compilation.chunkGraph.getTreeRuntimeRequirements(runtimeItem);
-          const hasRemoteModules =
-            compilation.chunkGraph.getChunkModulesIterableBySourceType(
-              upperContext.chunk,
-              'remote',
-            );
-          const consumeShares =
-            compilation.chunkGraph.getChunkModulesIterableBySourceType(
-              upperContext.chunk,
-              'consume-shared',
-            );
+
           const entryOptions = upperContext.chunk.getEntryOptions();
-          const initialChunks = Array.from(
-            upperContext.chunk.getAllInitialChunks(),
-          ).map((chunk: Chunk) => chunk.id);
+          const chunkInitialsSet = new Set(
+            compilation.chunkGraph.getChunkEntryDependentChunksIterable(
+              upperContext.chunk,
+            ),
+          );
+
+          chunkInitialsSet.add(upperContext.chunk);
           const dependOn = entryOptions?.dependOn || [];
-          const dependOnIDs = this.getChunkByName(compilation, dependOn);
-          const chunksToRef = [...dependOnIDs, ...initialChunks];
+          this.getChunkByName(compilation, dependOn, chunkInitialsSet);
+
+          const initialChunks = [];
+
+          let hasRemoteModules = false;
+          let consumeShares = false;
+
+          for (const chunk of chunkInitialsSet) {
+            initialChunks.push(chunk.id);
+            if (!hasRemoteModules) {
+              hasRemoteModules = Boolean(
+                compilation.chunkGraph.getChunkModulesIterableBySourceType(
+                  chunk,
+                  'remote',
+                ),
+              );
+            }
+            if (!consumeShares) {
+              consumeShares = Boolean(
+                compilation.chunkGraph.getChunkModulesIterableBySourceType(
+                  chunk,
+                  'consume-shared',
+                ),
+              );
+            }
+            if (hasRemoteModules && consumeShares) {
+              break;
+            }
+          }
 
           remotes = this._getRemotes(
             compiler.webpack.RuntimeGlobals,
             requirements,
-            Boolean(hasRemoteModules),
-            chunksToRef,
+            hasRemoteModules,
+            initialChunks,
             remotes,
           );
+
           shared = this._getShared(
             compiler.webpack.RuntimeGlobals,
             requirements,
-            Boolean(consumeShares),
-            chunksToRef,
+            consumeShares,
+            initialChunks,
             shared,
           );
         }
@@ -292,7 +316,11 @@ class AsyncEntryStartupPlugin {
 
         if (shouldInclude) {
           initialEntryModules.push(
-            `__webpack_require__(${JSON.stringify(entryModuleID)});`,
+            `if(__webpack_require__.m[${JSON.stringify(entryModuleID)}]) {
+              __webpack_require__(${JSON.stringify(entryModuleID)});
+            } else {
+              console.warn('Federation Runtime Module not found. In the current runtime');
+            }`,
           );
         }
       }

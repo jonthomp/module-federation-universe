@@ -170,11 +170,10 @@ it('should be able to consume different shared module version depending on conte
     ),
   ).toBe(true);
   expect(() => require('my-module3')).toThrowError(
-    'The loadShareSync function was unable to load shared',
+    'Invalid loadShareSync function',
   );
   expect(require('my-module4')).toBe('shared@9.9.9');
   // expectWarning();
-  debugger;
   expect(require('shared2')).toBe('shared2@9.9.9');
   // expectWarning(
   //   /No satisfying version \(=1\.2\.3 =3\.2\.1\) of shared module shared2 found in shared scope default/,

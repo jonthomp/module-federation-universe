@@ -49,10 +49,6 @@ Shop.getInitialProps = async () => {
   const timeout = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const fetchPromise = fetch('https://swapi.dev/api/people/1').then((res) =>
-    res.json(),
-  );
-
   const fallback = {
     name: 'Luke Skywalker',
     height: '172',
@@ -80,12 +76,11 @@ Shop.getInitialProps = async () => {
     ],
     created: '2014-12-09T13:50:51.644000Z',
     edited: '2014-12-20T21:17:56.891000Z',
-    url: 'https://swapi.dev/api/people/1/',
   };
 
-  const timerPromise = timeout(3000).then(() => fallback);
+  const timerPromise = timeout(500).then(() => fallback);
 
-  return Promise.race([fetchPromise, timerPromise]);
+  return Promise.race([timerPromise]);
 };
 
 export default Shop;

@@ -1,28 +1,4 @@
-import {
-  InitContainerEntryOptions,
-  WebpackRequire,
-  ShareScopeMap,
-} from './types';
-
-function isLegacyHost(
-  shareScope: InitContainerEntryOptions['shareScope'],
-  remoteEntryInitOptions: InitContainerEntryOptions['remoteEntryInitOptions'],
-): boolean {
-  if (
-    remoteEntryInitOptions &&
-    typeof remoteEntryInitOptions === 'object' &&
-    remoteEntryInitOptions.hostId
-  ) {
-    return false;
-  }
-  if ('version' in shareScope && typeof shareScope['version'] !== 'object') {
-    return true;
-  }
-  if ('region' in shareScope && typeof shareScope['region'] !== 'object') {
-    return true;
-  }
-  return false;
-}
+import { InitContainerEntryOptions, WebpackRequire } from './types';
 
 export function initContainerEntry(
   options: InitContainerEntryOptions,
@@ -50,12 +26,16 @@ export function initContainerEntry(
     ...remoteEntryInitOptions,
   });
 
-  federationInstance.initShareScopeMap(name, shareScope);
+  federationInstance.initShareScopeMap(name, shareScope, {
+    hostShareScopeMap: remoteEntryInitOptions?.shareScopeMap || {},
+  });
 
   if (webpackRequire.federation.attachShareScopeMap) {
     webpackRequire.federation.attachShareScopeMap(webpackRequire);
   }
-
+  if (typeof webpackRequire.federation.prefetch === 'function') {
+    webpackRequire.federation.prefetch();
+  }
   // @ts-ignore
   return webpackRequire.I(name, initScope);
 }

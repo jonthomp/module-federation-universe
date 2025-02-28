@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/nextjs-mf/src",
   "projectType": "library",
+  "tags": ["type:pkg"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -11,13 +12,7 @@
         "outputPath": "packages/nextjs-mf/dist",
         "main": "packages/nextjs-mf/src/index.ts",
         "tsConfig": "packages/nextjs-mf/tsconfig.lib.json",
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "updateBuildableProjectDepsInPackageJson": true,
-        "assets": ["packages/nextjs-mf/*.md"],
-        "additionalEntryPoints": [
-          "packages/nextjs-mf/utilities.ts",
-          "packages/nextjs-mf/src/utils/index.js"
-        ]
+        "assets": ["packages/nextjs-mf/*.md"]
       },
       "dependsOn": [
         {
@@ -27,7 +22,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
@@ -56,10 +51,13 @@
           {
             "command": "nx run nextjs-mf:build",
             "forwardAllArgs": false
+          },
+          {
+            "command": "rm ./packages/nextjs-mf/dist/package.json",
+            "forwardAllArgs": false
           }
         ]
       }
     }
-  },
-  "tags": ["package"]
+  }
 }

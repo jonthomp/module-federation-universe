@@ -11,7 +11,9 @@ const nextConfig = {
   },
   webpack(config, options) {
     const { isServer } = options;
-
+    config.watchOptions = {
+      ignored: ['**/node_modules/**', '**/@mf-types/**'],
+    };
     config.plugins.push(
       new NextFederationPlugin({
         name: 'shop',
@@ -32,7 +34,13 @@ const nextConfig = {
         },
         shared: {
           'lodash/': {},
-          'antd/': {},
+          antd: {
+            requiredVersion: '5.19.1',
+            version: '5.19.1',
+          },
+          '@ant-design/': {
+            singleton: true,
+          },
         },
         extraOptions: {
           exposePages: true,

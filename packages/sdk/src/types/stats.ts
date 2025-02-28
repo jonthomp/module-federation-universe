@@ -1,8 +1,27 @@
 import type { RemoteWithEntry, RemoteWithVersion } from './common';
 
-export type RemoteEntryType = 'esm' | 'global';
+export type RemoteEntryType =
+  | 'var'
+  | 'module'
+  | 'assign'
+  | 'assign-properties'
+  | 'this'
+  | 'window'
+  | 'self'
+  | 'global'
+  | 'commonjs'
+  | 'commonjs2'
+  | 'commonjs-module'
+  | 'commonjs-static'
+  | 'amd'
+  | 'amd-require'
+  | 'umd'
+  | 'umd2'
+  | 'jsonp'
+  | 'system'
+  | string;
 
-interface ResourceInfo {
+export interface ResourceInfo {
   path: string;
   name: string;
   type: RemoteEntryType;
@@ -13,13 +32,24 @@ export interface StatsBuildInfo {
   buildName: string;
 }
 
+export interface MetaDataTypes {
+  path: string;
+  name: string;
+  api: string;
+  zip: string;
+}
+
 export interface BasicStatsMetaData {
   name: string;
   globalName: string;
   buildInfo: StatsBuildInfo;
   remoteEntry: ResourceInfo;
-  prefetchEntry: ResourceInfo;
-  types: Omit<ResourceInfo, 'type'>;
+  ssrRemoteEntry?: ResourceInfo;
+  prefetchInterface?: boolean;
+  prefetchEntry?: ResourceInfo;
+  types: MetaDataTypes;
+  type: string;
+  pluginVersion: string;
 }
 
 type StatsMetaDataWithGetPublicPath<T = BasicStatsMetaData> = T & {
@@ -75,7 +105,7 @@ export type StatsRemote<T = StatsRemoteVal> =
 
 export interface StatsModuleInfo {
   name: string;
-  file: string;
+  file: string[];
 }
 
 export interface ManifestModuleInfos {
@@ -85,7 +115,7 @@ export interface ManifestModuleInfos {
 export interface StatsExpose {
   id: string;
   name: string;
-  path?: string; // 对线上已有数据兼容过渡至 2023-05-26
+  path?: string;
   file: string;
   requires: string[];
   assets: StatsAssets;

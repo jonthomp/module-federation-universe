@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/runtime-tools/src",
   "projectType": "library",
+  "tags": ["type:pkg"],
   "targets": {
     "build": {
       "executor": "@nx/rollup:rollup",
@@ -22,8 +23,7 @@
         "rollupConfig": "packages/runtime-tools/rollup.config.js",
         "format": ["cjs", "esm"],
         "external": ["@module-federation/*"],
-        "buildableProjectDepsInPackageJsonType": "dependencies",
-        "updateBuildableProjectDepsInPackageJson": true
+        "generatePackageJson": false
       },
       "dependsOn": [
         {
@@ -33,7 +33,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
@@ -73,6 +73,5 @@
         "passWithNoTests": true
       }
     }
-  },
-  "tags": ["package"]
+  }
 }

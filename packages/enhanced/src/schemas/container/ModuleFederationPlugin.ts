@@ -1,4 +1,10 @@
-//@ts-nocheck
+// @ts-nocheck
+/* eslint-disable */
+/*
+ * This file was automatically generated.
+ * DO NOT MODIFY BY HAND.
+ */
+
 export default {
   definitions: {
     AmdContainer: {
@@ -135,6 +141,7 @@ export default {
         'promise',
         'import',
         'script',
+        'module-import',
         'node-commonjs',
       ],
     },
@@ -460,6 +467,10 @@ export default {
           type: 'string',
           minLength: 1,
         },
+        shareStrategy: {
+          description: "load shared strategy(defaults to 'version-first').",
+          enum: ['version-first', 'loaded-first'],
+        },
         singleton: {
           description:
             'Allow only a single version of the shared module in share scope (disabled by default).',
@@ -518,6 +529,10 @@ export default {
   type: 'object',
   additionalProperties: false,
   properties: {
+    dataPrefetch: {
+      description: 'Enable Data Prefetch',
+      type: 'boolean',
+    },
     exposes: {
       $ref: '#/definitions/Exposes',
     },
@@ -527,13 +542,43 @@ export default {
       type: 'string',
       absolutePath: false,
     },
-    implementation: {
-      description: 'Runtime tools path',
+    getPublicPath: {
+      description: 'Custom public path function',
       type: 'string',
-      minLength: 1,
+    },
+    implementation: {
+      description: 'Bundler runtime path',
+      type: 'string',
     },
     library: {
       $ref: '#/definitions/LibraryOptions',
+    },
+    manifest: {
+      description: 'Manifest generation options',
+      anyOf: [
+        {
+          type: 'boolean',
+        },
+        {
+          type: 'object',
+          properties: {
+            filePath: {
+              type: 'string',
+            },
+            disableAssetsAnalyze: {
+              type: 'boolean',
+            },
+            fileName: {
+              type: 'string',
+            },
+            additionalData: {
+              type: 'string',
+              description:
+                'Function string to provide additional data to the manifest',
+            },
+          },
+        },
+      ],
     },
     name: {
       description: 'The name of the container.',
@@ -554,11 +599,10 @@ export default {
       $ref: '#/definitions/EntryRuntime',
     },
     runtimePlugins: {
+      description: 'Runtime plugin file paths or package name',
       type: 'array',
       items: {
-        description: 'Runtime Plugin File Path.',
         type: 'string',
-        minLength: 1,
       },
     },
     shareScope: {
@@ -567,8 +611,184 @@ export default {
       type: 'string',
       minLength: 1,
     },
+    shareStrategy: {
+      description: "load shared strategy(defaults to 'version-first').",
+      enum: ['version-first', 'loaded-first'],
+    },
     shared: {
       $ref: '#/definitions/Shared',
     },
+    virtualRuntimeEntry: {
+      description: 'Enable virtual runtime entry',
+      type: 'boolean',
+    },
+    dev: {
+      description: 'Development options',
+      anyOf: [
+        {
+          type: 'boolean',
+        },
+        {
+          type: 'object',
+          properties: {
+            disableLiveReload: {
+              type: 'boolean',
+            },
+            disableHotTypesReload: {
+              type: 'boolean',
+            },
+            disableDynamicRemoteTypeHints: {
+              type: 'boolean',
+            },
+          },
+        },
+      ],
+    },
+    dts: {
+      description: 'TypeScript declaration file generation options',
+      anyOf: [
+        {
+          type: 'boolean',
+        },
+        {
+          type: 'object',
+          properties: {
+            generateTypes: {
+              anyOf: [
+                {
+                  type: 'boolean',
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    tsConfigPath: {
+                      type: 'string',
+                    },
+                    typesFolder: {
+                      type: 'string',
+                    },
+                    compiledTypesFolder: {
+                      type: 'string',
+                    },
+                    deleteTypesFolder: {
+                      type: 'boolean',
+                    },
+                    additionalFilesToCompile: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                      },
+                    },
+                    compileInChildProcess: {
+                      type: 'boolean',
+                    },
+                    compilerInstance: {
+                      enum: ['tsc', 'vue-tsc'],
+                    },
+                    generateAPITypes: {
+                      type: 'boolean',
+                    },
+                    extractThirdParty: {
+                      type: 'boolean',
+                    },
+                    extractRemoteTypes: {
+                      type: 'boolean',
+                    },
+                    abortOnError: {
+                      type: 'boolean',
+                    },
+                  },
+                },
+              ],
+            },
+            consumeTypes: {
+              anyOf: [
+                {
+                  type: 'boolean',
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    typesFolder: {
+                      type: 'string',
+                    },
+                    abortOnError: {
+                      type: 'boolean',
+                    },
+                    remoteTypesFolder: {
+                      type: 'string',
+                    },
+                    deleteTypesFolder: {
+                      type: 'boolean',
+                    },
+                    maxRetries: {
+                      type: 'number',
+                    },
+                    consumeAPITypes: {
+                      type: 'boolean',
+                    },
+                    runtimePkgs: {
+                      type: 'array',
+                      items: {
+                        type: 'string',
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            tsConfigPath: {
+              type: 'string',
+            },
+            extraOptions: {
+              type: 'object',
+            },
+            implementation: {
+              type: 'string',
+            },
+            cwd: {
+              type: 'string',
+            },
+            displayErrorInTerminal: {
+              type: 'boolean',
+            },
+          },
+        },
+      ],
+    },
+    experiments: {
+      type: 'object',
+      properties: {
+        federationRuntime: {
+          anyOf: [
+            {
+              type: 'boolean',
+              enum: [false],
+            },
+            {
+              type: 'string',
+              enum: ['hoisted'],
+            },
+          ],
+        },
+        externalRuntime: {
+          type: 'boolean',
+        },
+        provideExternalRuntime: {
+          type: 'boolean',
+        },
+      },
+    },
+    bridge: {
+      type: 'object',
+      properties: {
+        disableAlias: {
+          description:
+            'Disables the default alias setting in the bridge. When true, users must manually handle basename through root component props.',
+          type: 'boolean',
+          default: false,
+        },
+      },
+    },
   },
-};
+} as const;

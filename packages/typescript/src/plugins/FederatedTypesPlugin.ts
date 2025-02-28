@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
-import { Compiler } from 'webpack';
+import { Compiler, WebpackPluginInstance } from 'webpack';
 import { startServer, stopServer } from '../lib/server';
 import { TypescriptCompiler } from '../lib/TypescriptCompiler';
 import {
@@ -39,9 +39,12 @@ export class FederatedTypesPlugin {
     );
 
     if (
-      !compiler.options.plugins.some(
-        (p) => SUPPORTED_PLUGINS.indexOf(p?.constructor.name ?? '') !== -1,
-      )
+      !compiler.options.plugins
+        .filter((p): p is WebpackPluginInstance => !!p)
+        .some(
+          (p: WebpackPluginInstance) =>
+            SUPPORTED_PLUGINS.indexOf(p?.constructor.name ?? '') !== -1,
+        )
     ) {
       this.logger.error(
         'Unable to find the Module Federation Plugin, this is plugin no longer provides it by default. Please add it to your webpack config.',
@@ -63,7 +66,7 @@ export class FederatedTypesPlugin {
       this.normalizeOptions.ignoredWatchOptions;
 
     if (!disableTypeCompilation) {
-      compiler.hooks.beforeCompile.tap(PLUGIN_NAME, (_) => {
+      compiler.hooks.beforeCompile.tap(PLUGIN_NAME, (_: unknown) => {
         this.generateTypes({ outputPath: compiler.outputPath });
       });
 
@@ -71,7 +74,7 @@ export class FederatedTypesPlugin {
 
       // TODO - this is not ideal, but it will repopulate types if clean is enabled
       if (compiler.options.output.clean) {
-        compiler.hooks.afterEmit.tap(PLUGIN_NAME, (_) => {
+        compiler.hooks.afterEmit.tap(PLUGIN_NAME, () => {
           this.generateTypes({ outputPath: compiler.outputPath });
         });
       }
@@ -80,7 +83,7 @@ export class FederatedTypesPlugin {
     if (!disableDownloadingRemoteTypes) {
       compiler.hooks.beforeCompile.tapAsync(
         PLUGIN_NAME,
-        async (_, callback) => {
+        async (params: unknown, callback: InnerCallback<Error, void>) => {
           if (typeDownloadCompleted) {
             callback();
             return;
@@ -108,10 +111,9 @@ export class FederatedTypesPlugin {
       compiler.hooks.watchRun.tap(PLUGIN_NAME, () => {
         isServe = true;
       });
-
       compiler.hooks.beforeCompile.tapAsync(
         PLUGIN_NAME,
-        async (_, callback) => {
+        async (params: unknown, callback: InnerCallback<Error, void>) => {
           this.logger.log('Preparing to serve types');
 
           try {

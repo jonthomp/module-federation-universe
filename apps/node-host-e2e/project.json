@@ -11,8 +11,20 @@
         "passWithNoTests": true
       }
     },
+    "test:e2e": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": true,
+        "commands": [
+          {
+            "command": "sleep 10 && nx run node-host-e2e:e2e && lsof -ti tcp:3022,3023,3333,3026,3027 | xargs kill",
+            "forwardAllArgs": true
+          }
+        ]
+      }
+    },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/node-host-e2e/**/*.{js,ts}"]

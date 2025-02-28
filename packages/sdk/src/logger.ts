@@ -1,58 +1,44 @@
-import { BROWSER_LOG_KEY, BROWSER_LOG_VALUE } from './constant';
-import { isBrowserEnv, isDebugMode } from './env';
+import { isDebugMode } from './env';
 
-function safeToString(info: any): string {
-  try {
-    return JSON.stringify(info, null, 2);
-  } catch (e) {
-    return '';
-  }
-}
+const PREFIX = '[ Module Federation ]';
 
-const DEBUG_LOG = '[ FEDERATION DEBUG ]';
 class Logger {
-  enable = false;
-  identifier: string;
-  constructor(identifier?: string) {
-    this.identifier = identifier || DEBUG_LOG;
-    if (
-      isBrowserEnv() &&
-      localStorage.getItem(BROWSER_LOG_KEY) === BROWSER_LOG_VALUE
-    ) {
-      this.enable = true;
-    } else if (isDebugMode()) {
-      this.enable = true;
-    }
+  prefix: string;
+  constructor(prefix: string) {
+    this.prefix = prefix;
   }
-  info(msg: string, info?: any): void {
-    if (this.enable) {
-      const argsToString = safeToString(info) || '';
-      if (isBrowserEnv()) {
-        console.info(
-          `%c ${this.identifier}: ${msg} ${argsToString}`,
-          'color:#3300CC',
-        );
-      } else {
-        console.info(
-          '\x1b[34m%s',
-          `${this.identifier}: ${msg} ${
-            argsToString ? `\n${argsToString}` : ''
-          }`,
-        );
-      }
-    }
+  log(...args: any[]) {
+    console.log(this.prefix, ...args);
   }
-  logOriginalInfo(...args: unknown[]) {
-    if (this.enable) {
-      if (isBrowserEnv()) {
-        console.info(`%c ${this.identifier}: OriginalInfo`, 'color:#3300CC');
-        console.log(...args);
-      } else {
-        console.info(`%c ${this.identifier}: OriginalInfo`, 'color:#3300CC');
-        console.log(...args);
-      }
+  warn(...args: any[]) {
+    console.log(this.prefix, ...args);
+  }
+  error(...args: any[]) {
+    console.log(this.prefix, ...args);
+  }
+
+  success(...args: any[]) {
+    console.log(this.prefix, ...args);
+  }
+  info(...args: any[]) {
+    console.log(this.prefix, ...args);
+  }
+  ready(...args: any[]) {
+    console.log(this.prefix, ...args);
+  }
+
+  debug(...args: any[]) {
+    if (isDebugMode()) {
+      console.log(this.prefix, ...args);
     }
   }
 }
 
-export { Logger };
+function createLogger(prefix: string) {
+  return new Logger(prefix);
+}
+
+const logger = createLogger(PREFIX);
+
+export { logger, createLogger };
+export type { Logger };

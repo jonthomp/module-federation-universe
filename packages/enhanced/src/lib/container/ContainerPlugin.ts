@@ -7,21 +7,25 @@ import ContainerEntryDependency from './ContainerEntryDependency';
 import ContainerEntryModuleFactory from './ContainerEntryModuleFactory';
 import ContainerExposedDependency from './ContainerExposedDependency';
 import { parseOptions } from './options';
-import type { optimize, Compiler, Compilation } from 'webpack';
-import type { ContainerPluginOptions } from '../../declarations/plugins/container/ContainerPlugin';
+import type {
+  Compiler,
+  Compilation,
+  WebpackError,
+  WebpackPluginInstance,
+  WebpackPluginFunction,
+} from 'webpack';
+import type { containerPlugin } from '@module-federation/sdk';
 import FederationRuntimePlugin from './runtime/FederationRuntimePlugin';
+import FederationModulesPlugin from './runtime/FederationModulesPlugin';
 import checkOptions from '../../schemas/container/ContainerPlugin.check';
 import schema from '../../schemas/container/ContainerPlugin';
+import FederationRuntimeDependency from './runtime/FederationRuntimeDependency';
+import type { OptimizationSplitChunksCacheGroup } from 'webpack/lib/optimize/SplitChunksPlugin';
+import type { Falsy } from 'webpack/declarations/WebpackOptions';
 
-type ExcludeUndefined<T> = T extends undefined ? never : T;
-type NonUndefined<T> = ExcludeUndefined<T>;
-
-type OptimizationSplitChunksOptions = NonUndefined<
-  ConstructorParameters<typeof optimize.SplitChunksPlugin>[0]
->;
-
-type CacheGroups = OptimizationSplitChunksOptions['cacheGroups'];
-type CacheGroup = NonUndefined<CacheGroups>[string];
+const ModuleDependency = require(
+  normalizeWebpackPath('webpack/lib/dependencies/ModuleDependency'),
+) as typeof import('webpack/lib/dependencies/ModuleDependency');
 
 const createSchemaValidation = require(
   normalizeWebpackPath('webpack/lib/util/create-schema-validation'),
@@ -35,14 +39,13 @@ const validate = createSchemaValidation(checkOptions, () => schema, {
 const PLUGIN_NAME = 'ContainerPlugin';
 
 class ContainerPlugin {
-  _options: ContainerPluginOptions;
+  _options: containerPlugin.ContainerPluginOptions;
   name: string;
-  /**
-   * @param {ContainerPluginOptions} options options
-   */
-  constructor(options: ContainerPluginOptions) {
+
+  constructor(options: containerPlugin.ContainerPluginOptions) {
     validate(options);
     this.name = PLUGIN_NAME;
+
     this._options = {
       name: options.name,
       shareScope: options.shareScope || 'default',
@@ -65,19 +68,28 @@ class ContainerPlugin {
         }),
       ),
       runtimePlugins: options.runtimePlugins,
+      experiments: options.experiments,
+      dataPrefetch: options.dataPrefetch,
     };
   }
 
   // container should not be affected by splitChunks
   static patchChunkSplit(compiler: Compiler, name: string): void {
     const { splitChunks } = compiler.options.optimization;
-    const patchChunkSplit = (cacheGroup: CacheGroup) => {
+    const patchChunkSplit = (
+      cacheGroup:
+        | string
+        | false
+        | ((...args: any[]) => any)
+        | RegExp
+        | OptimizationSplitChunksCacheGroup,
+    ) => {
       switch (typeof cacheGroup) {
         case 'boolean':
         case 'string':
         case 'function':
           break;
-        //  cacheGroup.chunks 会继承 splitChunks.chunks ，因此只需要对单独设置了 chunks 的 做修改
+        //  cacheGroup.chunks will inherit splitChunks.chunks, so you only need to modify the chunks that are set separately
         case 'object':
           {
             if (cacheGroup instanceof RegExp) {
@@ -89,7 +101,10 @@ class ContainerPlugin {
             if (typeof cacheGroup.chunks === 'function') {
               const prevChunks = cacheGroup.chunks;
               cacheGroup.chunks = (chunk) => {
-                if (chunk.name && chunk.name === name) {
+                if (
+                  chunk.name &&
+                  (chunk.name === name || chunk.name === name + '_partial')
+                ) {
                   return false;
                 }
                 return prevChunks(chunk);
@@ -99,7 +114,10 @@ class ContainerPlugin {
 
             if (cacheGroup.chunks === 'all') {
               cacheGroup.chunks = (chunk) => {
-                if (chunk.name && chunk.name === name) {
+                if (
+                  chunk.name &&
+                  (chunk.name === name || chunk.name === name + '_partial')
+                ) {
                   return false;
                 }
                 return true;
@@ -108,7 +126,10 @@ class ContainerPlugin {
             }
             if (cacheGroup.chunks === 'initial') {
               cacheGroup.chunks = (chunk) => {
-                if (chunk.name && chunk.name === name) {
+                if (
+                  chunk.name &&
+                  (chunk.name === name || chunk.name === name + '_partial')
+                ) {
                   return false;
                 }
                 return chunk.isOnlyInitial();
@@ -138,17 +159,20 @@ class ContainerPlugin {
   }
 
   apply(compiler: Compiler): void {
-    const useModuleFederationPlugin = compiler.options.plugins.find((p) => {
-      if (typeof p !== 'object' || !p) {
-        return false;
-      }
+    const useModuleFederationPlugin = compiler.options.plugins.find(
+      (p: Falsy | WebpackPluginInstance | WebpackPluginFunction) => {
+        if (typeof p !== 'object' || !p) {
+          return false;
+        }
 
-      return p['name'] === 'ModuleFederationPlugin';
-    });
+        return p['name'] === 'ModuleFederationPlugin';
+      },
+    );
 
     if (!useModuleFederationPlugin) {
       ContainerPlugin.patchChunkSplit(compiler, this._options.name);
     }
+
     const federationRuntimePluginInstance = new FederationRuntimePlugin();
     federationRuntimePluginInstance.apply(compiler);
 
@@ -164,71 +188,148 @@ class ContainerPlugin {
       compiler.options.output.enabledLibraryTypes.push(library.type);
     }
 
-    compiler.hooks.make.tapAsync(PLUGIN_NAME, (compilation, callback) => {
-      const dep = new ContainerEntryDependency(
-        name,
-        //@ts-ignore
-        exposes,
-        shareScope,
-        federationRuntimePluginInstance.entryFilePath,
-      );
-      const hasSingleRuntimeChunk =
-        compilation.options?.optimization?.runtimeChunk;
-      dep.loc = { name };
-      compilation.addEntry(
-        compilation.options.context || '',
-        //@ts-ignore
-        dep,
-        {
+    compiler.hooks.make.tapAsync(
+      PLUGIN_NAME,
+      async (
+        compilation: Compilation,
+        callback: (error?: WebpackError | null | undefined) => void,
+      ) => {
+        const hasSingleRuntimeChunk =
+          compilation.options?.optimization?.runtimeChunk;
+        const hooks = FederationModulesPlugin.getCompilationHooks(compilation);
+        const federationRuntimeDependency =
+          federationRuntimePluginInstance.getDependency(compiler);
+        const dep = new ContainerEntryDependency(
           name,
-          filename,
-          runtime: hasSingleRuntimeChunk ? false : runtime,
-          library,
-        },
-        (error: WebpackError | null | undefined) => {
-          if (error) return callback(error);
-          if (hasSingleRuntimeChunk) {
-            // Add to single runtime chunk as well.
-            // Allows for singleton runtime graph with all needed runtime modules for federation
-            addEntryToSingleRuntimeChunk();
-          } else {
-            callback();
-          }
-        },
-      );
-
-      // Function to add entry for undefined runtime
-      const addEntryToSingleRuntimeChunk = () => {
-        compilation.addEntry(
-          compilation.options.context || '',
           //@ts-ignore
+          exposes,
+          shareScope,
+          federationRuntimePluginInstance.entryFilePath,
+          this._options.experiments,
+          this._options.dataPrefetch,
+        );
+        dep.loc = { name };
+
+        await new Promise((resolve, reject) => {
+          compilation.addEntry(
+            compilation.options.context || '',
+            dep,
+            {
+              name,
+              filename,
+              runtime: hasSingleRuntimeChunk ? false : runtime,
+              library,
+            },
+            (error: WebpackError | null | undefined) => {
+              if (error) return reject(error);
+              hooks.addContainerEntryModule.call(dep);
+              resolve(undefined);
+            },
+          );
+        }).catch(callback);
+
+        await new Promise((resolve, reject) => {
+          compilation.addInclude(
+            compiler.context,
+            federationRuntimeDependency,
+            { name: undefined },
+            (err, module) => {
+              if (err) {
+                return reject(err);
+              }
+              hooks.addFederationRuntimeModule.call(
+                federationRuntimeDependency,
+              );
+              resolve(undefined);
+            },
+          );
+        }).catch(callback);
+
+        callback();
+      },
+    );
+
+    // this will still be copied into child compiler, so it needs a check to avoid running hook on child
+    // we have to use finishMake in order to check the entries created and see if there are multiple runtime chunks
+    compiler.hooks.finishMake.tapAsync(
+      PLUGIN_NAME,
+      (compilation: Compilation, callback) => {
+        if (
+          compilation.compiler.parentCompilation &&
+          compilation.compiler.parentCompilation !== compilation
+        ) {
+          return callback();
+        }
+
+        const hooks = FederationModulesPlugin.getCompilationHooks(compilation);
+        const createdRuntimes = new Set<string>();
+
+        for (const entry of compilation.entries.values()) {
+          const runtime = entry.options.runtime;
+          if (runtime) {
+            createdRuntimes.add(runtime);
+          }
+        }
+
+        if (
+          createdRuntimes.size === 0 &&
+          !compilation.options?.optimization?.runtimeChunk
+        ) {
+          return callback();
+        }
+
+        const dep = new ContainerEntryDependency(
+          name,
+          //@ts-ignore
+          exposes,
+          shareScope,
+          federationRuntimePluginInstance.entryFilePath,
+          this._options.experiments,
+          this._options.dataPrefetch,
+        );
+
+        dep.loc = { name };
+
+        compilation.addInclude(
+          compilation.options.context || '',
           dep,
-          {
-            name: name ? name + '_partial' : undefined, // give unique name name
-            runtime: undefined,
-            library,
-          },
+          { name: undefined },
           (error: WebpackError | null | undefined) => {
             if (error) return callback(error);
+            hooks.addContainerEntryModule.call(dep);
             callback();
           },
         );
-      };
-    });
+      },
+    );
 
+    // add the container entry module
     compiler.hooks.thisCompilation.tap(
       PLUGIN_NAME,
       (compilation: Compilation, { normalModuleFactory }) => {
         compilation.dependencyFactories.set(
           ContainerEntryDependency,
-          //@ts-ignore
           new ContainerEntryModuleFactory(),
         );
 
         compilation.dependencyFactories.set(
-          //@ts-ignore
           ContainerExposedDependency,
           normalModuleFactory,
+        );
+      },
+    );
+
+    // add include of federation runtime
+    compiler.hooks.thisCompilation.tap(
+      PLUGIN_NAME,
+      (compilation: Compilation, { normalModuleFactory }) => {
+        compilation.dependencyFactories.set(
+          FederationRuntimeDependency,
+          normalModuleFactory,
+        );
+        compilation.dependencyTemplates.set(
+          FederationRuntimeDependency,
+          new ModuleDependency.Template(),
         );
       },
     );

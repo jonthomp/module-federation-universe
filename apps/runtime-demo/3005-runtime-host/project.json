@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/runtime-demo/3005-runtime-host/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/webpack:webpack",
@@ -32,7 +33,7 @@
           "outputHashing": "all",
           "sourceMap": false,
           "namedChunks": false,
-          "extractLicenses": true,
+          "extractLicenses": false,
           "vendorChunk": false
         }
       },
@@ -69,7 +70,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["apps/runtime-demo/host/**/*.{ts,tsx,js,jsx}"]
@@ -96,9 +97,15 @@
       "options": {
         "cypressConfig": "apps/runtime-demo/3005-runtime-host/cypress.config.ts",
         "testingType": "e2e",
-        "baseUrl": "http://localhost:3005",
+        "baseUrl": "http://127.0.0.1:3005",
         "browser": "chrome"
       },
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ],
       "configurations": {
         "development": {
           "runnerUi": true,
@@ -124,7 +131,5 @@
         ]
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["typescript"]
+  }
 }

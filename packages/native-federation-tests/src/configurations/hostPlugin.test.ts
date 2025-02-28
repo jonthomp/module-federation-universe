@@ -7,7 +7,7 @@ describe('hostPlugin', () => {
     name: 'moduleFederationHost',
     filename: 'remoteEntry.js',
     remotes: {
-      moduleFederationTypescript: 'http://localhost:3000/remoteEntry.js',
+      moduleFederationTests: 'http://localhost:3000/remoteEntry.js',
     },
     shared: {
       react: { singleton: true, eager: true },
@@ -33,10 +33,11 @@ describe('hostPlugin', () => {
           testsFolder: '@mf-tests',
           deleteTestsFolder: true,
           mocksFolder: './__mocks__',
+          maxRetries: 3,
         });
 
         expect(mapRemotesToDownload).toStrictEqual({
-          moduleFederationTypescript: 'http://localhost:3000/@mf-tests.zip',
+          moduleFederationTests: 'http://localhost:3000/@mf-tests.zip',
         });
       });
 
@@ -46,6 +47,7 @@ describe('hostPlugin', () => {
           mocksFolder: './__mocks__',
           testsFolder: 'custom-tests',
           deleteTestsFolder: false,
+          maxRetries: 1,
         };
 
         const { hostOptions, mapRemotesToDownload } =
@@ -54,7 +56,7 @@ describe('hostPlugin', () => {
         expect(hostOptions).toStrictEqual(options);
 
         expect(mapRemotesToDownload).toStrictEqual({
-          moduleFederationTypescript: 'http://localhost:3000/custom-tests.zip',
+          moduleFederationTests: 'http://localhost:3000/custom-tests.zip',
         });
       });
     });
@@ -63,7 +65,7 @@ describe('hostPlugin', () => {
       const subpathModuleFederationConfig = {
         ...moduleFederationConfig,
         remotes: {
-          moduleFederationTypescript:
+          moduleFederationTests:
             'http://localhost:3000/subpatha/subpathb/remoteEntry.js',
         },
       };
@@ -73,8 +75,25 @@ describe('hostPlugin', () => {
       });
 
       expect(mapRemotesToDownload).toStrictEqual({
-        moduleFederationTypescript:
+        moduleFederationTests:
           'http://localhost:3000/subpatha/subpathb/@mf-tests.zip',
+      });
+    });
+
+    it('correctly resolve remotes with relative reference in place of absolute url', () => {
+      const subpathModuleFederationConfig = {
+        ...moduleFederationConfig,
+        remotes: {
+          moduleFederationTests: '/subpatha/remoteEntry.js',
+        },
+      };
+
+      const { mapRemotesToDownload } = retrieveHostConfig({
+        moduleFederationConfig: subpathModuleFederationConfig,
+      });
+
+      expect(mapRemotesToDownload).toStrictEqual({
+        moduleFederationTests: '/subpatha/@mf-tests.zip',
       });
     });
   });

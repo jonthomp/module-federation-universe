@@ -47,18 +47,14 @@ Checkout.getInitialProps = async () => {
   const timeout = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
-  const fetchPromise = fetch(
-    'https://jsonplaceholder.typicode.com/todos/1',
-  ).then((res) => res.json());
-
   // this will resolve after 3 seconds
-  const timerPromise = timeout(3000).then(() => ({
+  const timerPromise = timeout(500).then(() => ({
     userId: 1,
     id: 1,
     title: 'delectus aut autem',
     completed: false,
   }));
 
-  return Promise.race([fetchPromise, timerPromise]);
+  return Promise.race([timerPromise]);
 };
 export default Checkout;

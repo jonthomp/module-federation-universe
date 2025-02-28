@@ -4,16 +4,19 @@ const defaultOptions = {
   testsFolder: '@mf-tests',
   mocksFolder: './__mocks__',
   deleteTestsFolder: true,
-};
+  maxRetries: 3,
+} satisfies Partial<HostOptions>;
 
 const retrieveRemoteStringUrl = (remote: string) => {
   const splittedRemote = remote.split('@');
   return splittedRemote[splittedRemote.length - 1];
 };
 
+const FILE_PROTOCOL = 'file:';
+
 const buildZipUrl = (hostOptions: Required<HostOptions>, remote: string) => {
   const remoteStringUrl = retrieveRemoteStringUrl(remote);
-  const remoteUrl = new URL(remoteStringUrl);
+  const remoteUrl = new URL(remoteStringUrl, FILE_PROTOCOL);
 
   const pathnameWithoutEntry = remoteUrl.pathname
     .split('/')
@@ -21,7 +24,9 @@ const buildZipUrl = (hostOptions: Required<HostOptions>, remote: string) => {
     .join('/');
   remoteUrl.pathname = `${pathnameWithoutEntry}/${hostOptions.testsFolder}.zip`;
 
-  return remoteUrl.href;
+  return remoteUrl.protocol === FILE_PROTOCOL
+    ? remoteUrl.pathname
+    : remoteUrl.href;
 };
 
 const resolveRemotes = (hostOptions: Required<HostOptions>) => {

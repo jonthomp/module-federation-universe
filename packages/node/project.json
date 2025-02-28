@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/node/src",
   "projectType": "library",
+  "tags": ["type:pkg"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -11,8 +12,6 @@
         "outputPath": "packages/node/dist",
         "main": "packages/node/src/index.js",
         "tsConfig": "packages/node/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": true,
-        "buildableProjectDepsInPackageJsonType": "dependencies",
         "assets": ["packages/node/*.md"]
       },
       "dependsOn": [
@@ -23,7 +22,7 @@
       ]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/node/**/*.js", "packages/node/**/*.ts"]
@@ -49,10 +48,13 @@
           {
             "command": "nx run node:build",
             "forwardAllArgs": false
+          },
+          {
+            "command": "rm ./packages/node/dist/package.json",
+            "forwardAllArgs": false
           }
         ]
       }
     }
-  },
-  "tags": ["package"]
+  }
 }

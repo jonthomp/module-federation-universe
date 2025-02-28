@@ -32,6 +32,7 @@ describe('hostPlugin', () => {
           moduleFederationConfig,
           typesFolder: '@mf-types',
           deleteTypesFolder: true,
+          maxRetries: 3,
         });
 
         expect(mapRemotesToDownload).toStrictEqual({
@@ -44,6 +45,7 @@ describe('hostPlugin', () => {
           moduleFederationConfig,
           typesFolder: 'custom-types',
           deleteTypesFolder: false,
+          maxRetries: 1,
         };
 
         const { hostOptions, mapRemotesToDownload } =
@@ -73,6 +75,23 @@ describe('hostPlugin', () => {
       expect(mapRemotesToDownload).toStrictEqual({
         moduleFederationTypescript:
           'http://localhost:3000/subpatha/subpathb/@mf-types.zip',
+      });
+    });
+
+    it('correctly resolve remotes with relative reference in place of absolute url', () => {
+      const subpathModuleFederationConfig = {
+        ...moduleFederationConfig,
+        remotes: {
+          moduleFederationTypescript: '/subpatha/remoteEntry.js',
+        },
+      };
+
+      const { mapRemotesToDownload } = retrieveHostConfig({
+        moduleFederationConfig: subpathModuleFederationConfig,
+      });
+
+      expect(mapRemotesToDownload).toStrictEqual({
+        moduleFederationTypescript: '/subpatha/@mf-types.zip',
       });
     });
   });

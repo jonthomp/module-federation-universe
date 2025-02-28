@@ -11,14 +11,6 @@ import { getFederationGlobalScope } from '../container/runtime/utils';
 const { Template, RuntimeGlobals, RuntimeModule } = require(
   normalizeWebpackPath('webpack'),
 ) as typeof import('webpack');
-const {
-  parseVersionRuntimeCode,
-  versionLtRuntimeCode,
-  rangeToStringRuntimeCode,
-  satisfyRuntimeCode,
-} = require(
-  normalizeWebpackPath('webpack/lib/util/semver'),
-) as typeof import('webpack/lib/util/semver');
 
 class ConsumeSharedRuntimeModule extends RuntimeModule {
   private _runtimeRequirements: ReadonlySet<string>;
@@ -92,6 +84,13 @@ class ConsumeSharedRuntimeModule extends RuntimeModule {
         moduleIdToSourceMapping.set(id, sharedInfoAndHandlerStr);
       }
     };
+    // const chunkReferences = this._runtimeRequirements.has(
+    //   'federation-entry-startup',
+    // )
+    //   ? this.chunk?.getAllReferencedChunks()
+    //   : this.chunk?.getAllAsyncChunks();
+    //
+    // const allChunks = chunkReferences || [];
     const allChunks = [...(this.chunk?.getAllReferencedChunks() || [])];
     for (const chunk of allChunks) {
       const modules = chunkGraph.getChunkModulesIterableBySourceType(
@@ -99,7 +98,9 @@ class ConsumeSharedRuntimeModule extends RuntimeModule {
         'consume-shared',
       );
       if (!modules) continue;
-      if (!chunk.id) continue;
+      // chunk.id may equal 0
+      if (chunk.id === null || (typeof chunk.id === 'string' && !chunk.id))
+        continue;
 
       addModules(
         modules,
@@ -133,7 +134,19 @@ class ConsumeSharedRuntimeModule extends RuntimeModule {
       initialConsumes.length > 0
         ? Template.asString([
             `var initialConsumes = ${JSON.stringify(initialConsumes)};`,
-            `${federationGlobal}.installInitialConsumes= ()=>${federationGlobal}.bundlerRuntime.installInitialConsumes({initialConsumes, installedModules, moduleToHandlerMapping, webpackRequire:${RuntimeGlobals.require}});`,
+            `${federationGlobal}.installInitialConsumes = ${runtimeTemplate.returningFunction(
+              Template.asString([
+                `${federationGlobal}.bundlerRuntime.installInitialConsumes({`,
+                Template.indent([
+                  'initialConsumes: initialConsumes,',
+                  'installedModules:installedModules,',
+                  'moduleToHandlerMapping:moduleToHandlerMapping,',
+                  `webpackRequire: ${RuntimeGlobals.require}`,
+                ]),
+                `})`,
+              ]),
+              '',
+            )}`,
           ])
         : '// no consumes in initial chunks',
       this._runtimeRequirements.has(RuntimeGlobals.ensureChunkHandlers)
@@ -146,7 +159,14 @@ class ConsumeSharedRuntimeModule extends RuntimeModule {
             `${
               RuntimeGlobals.ensureChunkHandlers
             }.consumes = ${runtimeTemplate.basicFunction('chunkId, promises', [
-              `${federationGlobal}.bundlerRuntime.consumes({chunkMapping, installedModules, chunkId, moduleToHandlerMapping, promises, webpackRequire:${RuntimeGlobals.require}});`,
+              `${federationGlobal}.bundlerRuntime.consumes({`,
+              'chunkMapping: chunkMapping,',
+              'installedModules: installedModules,',
+              'chunkId: chunkId,',
+              'moduleToHandlerMapping: moduleToHandlerMapping,',
+              'promises: promises,',
+              `webpackRequire:${RuntimeGlobals.require}`,
+              '});',
             ])}`,
           ])
         : '// no chunk loading of consumes',

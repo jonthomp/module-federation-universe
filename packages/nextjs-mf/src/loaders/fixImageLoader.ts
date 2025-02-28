@@ -27,9 +27,8 @@ export async function fixImageLoader(
 ) {
   this.cacheable(true);
 
-  const isServer = this._compiler?.options.name !== 'client';
-  //@ts-ignore
-  const { publicPath } = this._compiler.webpack.RuntimeGlobals;
+  const isServer = this._compiler?.options?.name !== 'client';
+  const publicPath = this._compiler?.webpack?.RuntimeGlobals?.publicPath ?? '';
 
   const result = await this.importModule(
     `${this.resourcePath}.webpack[javascript/auto]!=!${remaining}`,
@@ -49,12 +48,14 @@ export async function fixImageLoader(
             'const name = __webpack_require__.federation.instance.name',
             `const container = globalThisVal['__FEDERATION__']['__INSTANCES__'].find(
               (instance) => {
+                if(!instance) return;
                 if (!instance.moduleCache.has(name)) return;
                 const container = instance.moduleCache.get(name);
                 if (!container.remoteInfo) return;
                 return container.remoteInfo.entry;
               },
             );`,
+            'if(!container) return "";',
             'const cache = container.moduleCache',
             'const remote = cache.get(name).remoteInfo',
             `const remoteEntry = remote.entry;`,
@@ -80,12 +81,7 @@ export async function fixImageLoader(
         Template.indent([
           'try {',
           Template.indent([
-            `if(typeof document === 'undefined')`,
-            Template.indent(
-              `return ${publicPath} && ${publicPath}.indexOf('://') > 0 ? new URL(${publicPath}).origin : ''`,
-            ),
-            `const path = (document.currentScript && document.currentScript.src) || new URL(${publicPath}).origin;`,
-            `const splitted = path.split('/_next')`,
+            `const splitted = ${publicPath} ? ${publicPath}.split('/_next') : '';`,
             `return splitted.length === 2 ? splitted[0] : '';`,
           ]),
           '} catch (e) {',

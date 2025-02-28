@@ -1,6 +1,19 @@
-//@ts-nocheck
+// @ts-nocheck
+/* eslint-disable */
+/*
+ * This file was automatically generated.
+ * DO NOT MODIFY BY HAND.
+ */
+
 export default {
   definitions: {
+    RuntimePlugin: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+      description: 'Runtime plugin file paths or package name.',
+    },
     AmdContainer: {
       description:
         'Add a container for define/require functions in the AMD module.',
@@ -303,12 +316,7 @@ export default {
       $ref: '#/definitions/EntryRuntime',
     },
     runtimePlugins: {
-      type: 'array',
-      items: {
-        description: 'Runtime Plugin File Path.',
-        type: 'string',
-        minLength: 1,
-      },
+      $ref: '#/definitions/RuntimePlugin',
     },
     shareScope: {
       description:
@@ -316,6 +324,32 @@ export default {
       type: 'string',
       minLength: 1,
     },
+    experiments: {
+      type: 'object',
+      properties: {
+        federationRuntime: {
+          anyOf: [
+            {
+              type: 'boolean',
+            },
+            {
+              enum: ['hoisted'],
+            },
+          ],
+        },
+        externalRuntime: {
+          anyOf: [
+            {
+              type: 'boolean',
+            },
+            {
+              enum: ['provide'],
+            },
+          ],
+        },
+      },
+      additionalProperties: false,
+    },
   },
   required: ['name', 'exposes'],
-};
+} as const;

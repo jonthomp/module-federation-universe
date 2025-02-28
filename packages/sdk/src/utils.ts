@@ -6,15 +6,18 @@ import {
   SEPARATOR,
   MANIFEST_EXT,
 } from './constant';
-import { Logger } from './logger';
 import { getProcessEnv } from './env';
 
 const LOG_CATEGORY = '[ Federation Runtime ]';
 
 // entry: name:version   version : 1.0.0 | ^1.2.3
 // entry: name:entry  entry:  https://localhost:9000/federation-manifest.json
-const parseEntry = (str: string, devVerOrUrl?: string): RemoteEntryInfo => {
-  const strSplit = str.split(SEPARATOR);
+const parseEntry = (
+  str: string,
+  devVerOrUrl?: string,
+  separator = SEPARATOR,
+): RemoteEntryInfo => {
+  const strSplit = str.split(separator);
   const devVersionOrUrl =
     getProcessEnv()['NODE_ENV'] === 'development' && devVerOrUrl;
   const defaultVersion = '*';
@@ -23,8 +26,17 @@ const parseEntry = (str: string, devVerOrUrl?: string): RemoteEntryInfo => {
 
   // Check if the string starts with a type
   if (strSplit.length >= 2) {
-    const [name, ...versionOrEntryArr] = strSplit;
-    const versionOrEntry = devVersionOrUrl || versionOrEntryArr.join(SEPARATOR);
+    let [name, ...versionOrEntryArr] = strSplit;
+    // @name@manifest-url.json
+    if (str.startsWith(separator)) {
+      name = strSplit.slice(0, 2).join(separator);
+      versionOrEntryArr = [
+        devVersionOrUrl || strSplit.slice(2).join(separator),
+      ];
+    }
+
+    let versionOrEntry = devVersionOrUrl || versionOrEntryArr.join(separator);
+
     if (isEntry(versionOrEntry)) {
       return {
         name,
@@ -60,9 +72,7 @@ declare global {
   var FEDERATION_DEBUG: string | undefined;
 }
 
-const logger = new Logger();
-
-const composeKeyWithSeparator = /* @__PURE__ */ function (
+const composeKeyWithSeparator = function (
   ...args: (string | undefined)[]
 ): string {
   if (!args.length) {
@@ -81,7 +91,7 @@ const composeKeyWithSeparator = /* @__PURE__ */ function (
   }, '') as string;
 };
 
-const encodeName = /* @__PURE__ */ function (
+const encodeName = function (
   name: string,
   prefix = '',
   withExt = false,
@@ -106,7 +116,7 @@ const encodeName = /* @__PURE__ */ function (
   }
 };
 
-const decodeName = /* @__PURE__ */ function (
+const decodeName = function (
   name: string,
   prefix?: string,
   withExt?: boolean,
@@ -141,7 +151,7 @@ const decodeName = /* @__PURE__ */ function (
   }
 };
 
-const generateExposeFilename = /* @__PURE__ */ (
+const generateExposeFilename = (
   exposeName: string,
   withExt: boolean,
 ): string => {
@@ -160,10 +170,7 @@ const generateExposeFilename = /* @__PURE__ */ (
   return encodeName(expose, '__federation_expose_', withExt);
 };
 
-const generateShareFilename = /* @__PURE__ */ (
-  pkgName: string,
-  withExt: boolean,
-): string => {
+const generateShareFilename = (pkgName: string, withExt: boolean): string => {
   if (!pkgName) {
     return '';
   }
@@ -172,13 +179,20 @@ const generateShareFilename = /* @__PURE__ */ (
 
 const getResourceUrl = (module: ModuleInfo, sourceUrl: string): string => {
   if ('getPublicPath' in module) {
-    const publicPath = new Function(module.getPublicPath)();
+    let publicPath;
+
+    if (!module.getPublicPath.startsWith('function')) {
+      publicPath = new Function(module.getPublicPath)();
+    } else {
+      publicPath = new Function('return ' + module.getPublicPath)()();
+    }
+
     return `${publicPath}${sourceUrl}`;
   } else if ('publicPath' in module) {
     return `${module.publicPath}${sourceUrl}`;
   } else {
     console.warn(
-      'Can not get resource url, if in debug mode, please ignore',
+      'Cannot get resource URL. If in debug mode, please ignore.',
       module,
       sourceUrl,
     );
@@ -201,9 +215,23 @@ const warn = (msg: Parameters<typeof console.warn>[0]): void => {
   console.warn(`${LOG_CATEGORY}: ${msg}`);
 };
 
+function safeToString(info: any): string {
+  try {
+    return JSON.stringify(info, null, 2);
+  } catch (e) {
+    return '';
+  }
+}
+
+// RegExp for version string
+const VERSION_PATTERN_REGEXP: RegExp = /^([\d^=v<>~]|[*xX]$)/;
+
+function isRequiredVersion(str: string): boolean {
+  return VERSION_PATTERN_REGEXP.test(str);
+}
+
 export {
   parseEntry,
-  logger,
   decodeName,
   encodeName,
   composeKeyWithSeparator,
@@ -213,4 +241,6 @@ export {
   assert,
   error,
   warn,
+  safeToString,
+  isRequiredVersion,
 };

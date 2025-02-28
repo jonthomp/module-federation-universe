@@ -3,7 +3,17 @@ export default function (): FederationRuntimePlugin {
   return {
     name: 'custom-plugin',
     beforeInit(args) {
-      console.log('beforeInit: ', args);
+      const { userOptions, shareInfo } = args;
+      const { shared } = userOptions;
+
+      if (shared) {
+        Object.keys(shared || {}).forEach((sharedKey) => {
+          const sharedItem = shared[sharedKey];
+          if (!Array.isArray(sharedItem) && !sharedItem.strategy) {
+            sharedItem.strategy = 'loaded-first';
+          }
+        });
+      }
       return args;
     },
     beforeRequest(args) {

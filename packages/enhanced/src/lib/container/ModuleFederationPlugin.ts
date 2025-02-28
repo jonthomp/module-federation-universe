@@ -4,16 +4,25 @@
 */
 
 'use strict';
-
-import type { Compiler, WebpackPluginInstance } from 'webpack';
+import { DtsPlugin } from '@module-federation/dts-plugin';
+import { ContainerManager, utils } from '@module-federation/managers';
+import { StatsPlugin } from '@module-federation/manifest';
+import {
+  composeKeyWithSeparator,
+  type moduleFederationPlugin,
+  logger,
+} from '@module-federation/sdk';
+import { PrefetchPlugin } from '@module-federation/data-prefetch/cli';
 import { normalizeWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
-import type { ModuleFederationPluginOptions } from './ModuleFederationPluginTypes';
+import type { Compiler, WebpackPluginInstance } from 'webpack';
 import SharePlugin from '../sharing/SharePlugin';
 import ContainerPlugin from './ContainerPlugin';
 import ContainerReferencePlugin from './ContainerReferencePlugin';
-import checkOptions from '../../schemas/container/ModuleFederationPlugin.check';
-import schema from '../../schemas/container/ModuleFederationPlugin';
 import FederationRuntimePlugin from './runtime/FederationRuntimePlugin';
+import { RemoteEntryPlugin } from './runtime/RemoteEntryPlugin';
+import { ExternalsType } from 'webpack/declarations/WebpackOptions';
+import StartupChunkDependenciesPlugin from '../startup/MfStartupChunkDependenciesPlugin';
+import FederationModulesPlugin from './runtime/FederationModulesPlugin';
 
 const isValidExternalsType = require(
   normalizeWebpackPath(
@@ -21,27 +30,33 @@ const isValidExternalsType = require(
   ),
 ) as typeof import('webpack/schemas/plugins/container/ExternalsType.check.js');
 
-const createSchemaValidation = require(
-  normalizeWebpackPath('webpack/lib/util/create-schema-validation'),
-) as typeof import('webpack/lib/util/create-schema-validation');
-const validate = createSchemaValidation(
-  //eslint-disable-next-line
-  checkOptions,
-  () => schema,
-  {
-    name: 'Module Federation Plugin',
-    baseDataPath: 'options',
-  },
-);
+const { ExternalsPlugin } = require(
+  normalizeWebpackPath('webpack'),
+) as typeof import('webpack');
 
 class ModuleFederationPlugin implements WebpackPluginInstance {
-  private _options: ModuleFederationPluginOptions;
+  private _options: moduleFederationPlugin.ModuleFederationPluginOptions;
+  private _statsPlugin?: StatsPlugin;
   /**
-   * @param {ModuleFederationPluginOptions} options options
+   * @param {moduleFederationPlugin.ModuleFederationPluginOptions} options options
    */
-  constructor(options: ModuleFederationPluginOptions) {
-    validate(options);
+  constructor(options: moduleFederationPlugin.ModuleFederationPluginOptions) {
     this._options = options;
+  }
+
+  private _patchBundlerConfig(compiler: Compiler): void {
+    const { name } = this._options;
+    const MFPluginNum = compiler.options.plugins.filter(
+      (p): p is WebpackPluginInstance =>
+        !!p && (p as any).name === 'ModuleFederationPlugin',
+    ).length;
+    if (name && MFPluginNum < 2) {
+      new compiler.webpack.DefinePlugin({
+        FEDERATION_BUILD_IDENTIFIER: JSON.stringify(
+          composeKeyWithSeparator(name, utils.getBuildVersion()),
+        ),
+      }).apply(compiler);
+    }
   }
 
   /**
@@ -51,23 +66,79 @@ class ModuleFederationPlugin implements WebpackPluginInstance {
    */
   apply(compiler: Compiler): void {
     const { _options: options } = this;
-    // @ts-ignore
+    // must before ModuleFederationPlugin
+    if (options.getPublicPath && options.name) {
+      new RemoteEntryPlugin(options.name, options.getPublicPath).apply(
+        compiler,
+      );
+    }
+    if (options.experiments?.provideExternalRuntime) {
+      if (options.exposes) {
+        throw new Error(
+          'You can only set provideExternalRuntime: true in pure consumer which not expose modules.',
+        );
+      }
+      const runtimePlugins = options.runtimePlugins || [];
+      options.runtimePlugins = runtimePlugins.concat(
+        require.resolve(
+          '@module-federation/inject-external-runtime-core-plugin',
+        ),
+      );
+    }
+
+    if (options.experiments?.externalRuntime === true) {
+      const Externals = compiler.webpack.ExternalsPlugin || ExternalsPlugin;
+      new Externals(compiler.options.externalsType || 'global', {
+        '@module-federation/runtime-core': '_FEDERATION_RUNTIME_CORE',
+      }).apply(compiler);
+    }
+
+    if (options.experiments?.federationRuntime) {
+      new FederationModulesPlugin().apply(compiler);
+      new StartupChunkDependenciesPlugin({
+        asyncChunkLoading: true,
+      }).apply(compiler);
+    }
+
+    if (options.dts !== false) {
+      new DtsPlugin(options).apply(compiler);
+    }
+    if (options.dataPrefetch) {
+      new PrefetchPlugin(options).apply(compiler);
+    }
+
     new FederationRuntimePlugin(options).apply(compiler);
+
     const library = options.library || { type: 'var', name: options.name };
     const remoteType =
       options.remoteType ||
       (options.library && isValidExternalsType(options.library.type)
-        ? options.library.type
-        : 'script');
+        ? (options.library.type as ExternalsType)
+        : ('script' as ExternalsType));
 
     const useContainerPlugin =
       options.exposes &&
       (Array.isArray(options.exposes)
         ? options.exposes.length > 0
         : Object.keys(options.exposes).length > 0);
+
+    let disableManifest = options.manifest === false;
     if (useContainerPlugin) {
-      // @ts-ignore
-      ContainerPlugin.patchChunkSplit(compiler, this._options.name);
+      ContainerPlugin.patchChunkSplit(compiler, this._options.name!);
+    }
+    this._patchBundlerConfig(compiler);
+    if (!disableManifest && useContainerPlugin) {
+      try {
+        const containerManager = new ContainerManager();
+        containerManager.init(options);
+        options.exposes = containerManager.containerPluginExposesOptions;
+      } catch (err) {
+        if (err instanceof Error) {
+          err.message = `[ ModuleFederationPlugin ]: Manifest will not generate, because: ${err.message}`;
+        }
+        logger.warn(err);
+        disableManifest = true;
+      }
     }
 
     if (
@@ -76,19 +147,18 @@ class ModuleFederationPlugin implements WebpackPluginInstance {
     ) {
       compiler.options.output.enabledLibraryTypes?.push(library.type);
     }
+
     compiler.hooks.afterPlugins.tap('ModuleFederationPlugin', () => {
       if (useContainerPlugin) {
         new ContainerPlugin({
-          //@ts-ignore
-          name: options.name,
+          name: options.name!,
           library,
           filename: options.filename,
           runtime: options.runtime,
           shareScope: options.shareScope,
-          //@ts-ignore
-          exposes: options.exposes,
+          exposes: options.exposes!,
           runtimePlugins: options.runtimePlugins,
-          //@ts-ignore
+          experiments: options.experiments,
         }).apply(compiler);
       }
       if (
@@ -98,7 +168,6 @@ class ModuleFederationPlugin implements WebpackPluginInstance {
           : Object.keys(options.remotes).length > 0)
       ) {
         new ContainerReferencePlugin({
-          //@ts-ignore
           remoteType,
           shareScope: options.shareScope,
           remotes: options.remotes,
@@ -111,6 +180,19 @@ class ModuleFederationPlugin implements WebpackPluginInstance {
         }).apply(compiler);
       }
     });
+
+    if (!disableManifest) {
+      const pkg = require('../../../../package.json');
+      this._statsPlugin = new StatsPlugin(options, {
+        pluginVersion: pkg.version,
+        bundler: 'webpack',
+      });
+      this._statsPlugin.apply(compiler);
+    }
+  }
+
+  get statsResourceInfo() {
+    return this._statsPlugin?.resourceInfo;
   }
 }
 

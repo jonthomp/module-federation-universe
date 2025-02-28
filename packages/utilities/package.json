@@ -1,8 +1,8 @@
 {
   "name": "@module-federation/utilities",
-  "version": "3.0.5",
-  "type": "commonjs",
+  "version": "3.1.45",
   "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
   "types": "./dist/index.cjs.d.ts",
   "license": "MIT",
   "publishConfig": {
@@ -12,14 +12,21 @@
     "dist/",
     "README.md"
   ],
-  "repository": "https://github.com/module-federation/universe/tree/main/packages/utilities",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/module-federation/core/",
+    "directory": "packages/utilities"
+  },
   "devDependencies": {
-    "react": "18.2.0"
+    "react": "18.3.1"
+  },
+  "dependencies": {
+    "@module-federation/sdk": "workspace:*"
   },
   "peerDependencies": {
-    "webpack": "^5.40.0",
+    "react": "^16 || ^17 || ^18",
     "react-dom": "^16 || ^17 || ^18",
-    "react": "^16 || ^17 || ^18"
+    "webpack": "^5.40.0"
   },
   "peerDependenciesMeta": {
     "react": {
@@ -33,7 +40,11 @@
     }
   },
   "exports": {
-    ".": "./dist/index.cjs.js",
+    ".": {
+      "types": "./dist/index.cjs.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {

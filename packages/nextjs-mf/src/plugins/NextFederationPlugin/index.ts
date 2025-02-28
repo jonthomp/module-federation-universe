@@ -6,11 +6,10 @@
 'use strict';
 
 import type {
-  ModuleFederationPluginOptions,
   NextFederationPluginExtraOptions,
   NextFederationPluginOptions,
-} from '@module-federation/utilities';
-import type { Compiler } from 'webpack';
+} from './next-fragments';
+import type { Compiler, WebpackPluginInstance } from 'webpack';
 import { getWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
 import CopyFederationPlugin from '../CopyFederationPlugin';
 import { exposeNextjsPages } from '../../loaders/nextPageMapLoader';
@@ -21,19 +20,22 @@ import {
   validatePluginOptions,
 } from './validate-options';
 import {
+  modifyEntry,
   applyServerPlugins,
   configureServerCompilerOptions,
   configureServerLibraryAndFilename,
   handleServerExternals,
 } from './apply-server-plugins';
 import { applyClientPlugins } from './apply-client-plugins';
-import { ModuleFederationPlugin } from '@module-federation/enhanced';
+import { ModuleFederationPlugin } from '@module-federation/enhanced/webpack';
+import type { moduleFederationPlugin } from '@module-federation/sdk';
+
 import path from 'path';
 /**
  * NextFederationPlugin is a webpack plugin that handles Next.js application federation using Module Federation.
  */
 export class NextFederationPlugin {
-  private _options: ModuleFederationPluginOptions;
+  private _options: moduleFederationPlugin.ModuleFederationPluginOptions;
   private _extraOptions: NextFederationPluginExtraOptions;
   public name: string;
   /**
@@ -59,27 +61,70 @@ export class NextFederationPlugin {
     if (!this.validateOptions(compiler)) return;
     const isServer = this.isServerCompiler(compiler);
     new CopyFederationPlugin(isServer).apply(compiler);
-    this.applyConditionalPlugins(compiler, isServer);
     const normalFederationPluginOptions = this.getNormalFederationPluginOptions(
       compiler,
       isServer,
     );
-    // ContainerPlugin will get NextFederationPlugin._options, so NextFederationPlugin._options should be the same as normalFederationPluginOptions
     this._options = normalFederationPluginOptions;
+    this.applyConditionalPlugins(compiler, isServer);
+
     new ModuleFederationPlugin(normalFederationPluginOptions).apply(compiler);
 
-    const runtimeESMPath = require.resolve(
-      '@module-federation/runtime/dist/index.esm.js',
-    );
+    const noop = this.getNoopPath();
+
+    if (!this._extraOptions.skipSharingNextInternals) {
+      compiler.hooks.make.tapAsync(
+        'NextFederationPlugin',
+        (compilation, callback) => {
+          const dep = compiler.webpack.EntryPlugin.createDependency(
+            noop,
+            'noop',
+          );
+          compilation.addEntry(
+            compiler.context,
+            dep,
+            { name: 'noop' },
+            (err, module) => {
+              if (err) {
+                return callback(err);
+              }
+              callback();
+            },
+          );
+        },
+      );
+    }
+
+    if (!compiler.options.ignoreWarnings) {
+      compiler.options.ignoreWarnings = [
+        //@ts-ignore
+        (message) => /your target environment does not appear/.test(message),
+      ];
+    }
     compiler.hooks.afterPlugins.tap('PatchAliasWebpackPlugin', () => {
       compiler.options.resolve.alias = {
         ...compiler.options.resolve.alias,
-        '@module-federation/runtime$': runtimeESMPath,
+        //useing embedded runtime
+        // '@module-federation/runtime$': runtimeESMPath,
       };
     });
   }
 
   private validateOptions(compiler: Compiler): boolean {
+    const manifestPlugin = compiler.options.plugins.find(
+      (p): p is WebpackPluginInstance =>
+        p?.constructor?.name === 'BuildManifestPlugin',
+    );
+
+    if (manifestPlugin) {
+      //@ts-ignore
+      if (manifestPlugin?.appDirEnabled) {
+        throw new Error(
+          'App Directory is not supported by nextjs-mf. Use only pages directory, do not open git issues about this',
+        );
+      }
+    }
+
     const compilerValid = validateCompilerOptions(compiler);
     const pluginValid = validatePluginOptions(this._options);
     const envValid = process.env['NEXT_PRIVATE_LOCAL_WEBPACK'];
@@ -105,10 +150,16 @@ export class NextFederationPlugin {
 
   private applyConditionalPlugins(compiler: Compiler, isServer: boolean) {
     compiler.options.output.uniqueName = this._options.name;
-    applyPathFixes(compiler, this._extraOptions);
+    compiler.options.output.environment = {
+      ...compiler.options.output.environment,
+      asyncFunction: true,
+    };
+
+    applyPathFixes(compiler, this._options, this._extraOptions);
     if (this._extraOptions.debug) {
       compiler.options.devtool = false;
     }
+
     if (isServer) {
       configureServerCompilerOptions(compiler);
       configureServerLibraryAndFilename(this._options);
@@ -125,24 +176,24 @@ export class NextFederationPlugin {
   private getNormalFederationPluginOptions(
     compiler: Compiler,
     isServer: boolean,
-  ): ModuleFederationPluginOptions {
-    const defaultShared = retrieveDefaultShared(isServer);
-    const noop = this.getNoopPath();
+  ): moduleFederationPlugin.ModuleFederationPluginOptions {
+    const defaultShared = this._extraOptions.skipSharingNextInternals
+      ? {}
+      : retrieveDefaultShared(isServer);
+
     return {
       ...this._options,
       runtime: false,
       remoteType: 'script',
-      // @ts-ignore
       runtimePlugins: [
+        ...(isServer
+          ? [require.resolve('@module-federation/node/runtimePlugin')]
+          : []),
         require.resolve(path.join(__dirname, '../container/runtimePlugin')),
-        //@ts-ignore
         ...(this._options.runtimePlugins || []),
-      ],
+      ].map((plugin) => plugin + '?runtimePlugin'),
+      //@ts-ignore
       exposes: {
-        './noop': noop,
-        './react': require.resolve('react'),
-        './react-dom': require.resolve('react-dom'),
-        './next/router': require.resolve('next/router'),
         ...this._options.exposes,
         ...(this._extraOptions.exposePages
           ? exposeNextjsPages(compiler.options.context as string)
@@ -154,6 +205,15 @@ export class NextFederationPlugin {
       shared: {
         ...defaultShared,
         ...this._options.shared,
+      },
+      ...(isServer
+        ? { manifest: { filePath: '' } }
+        : { manifest: { filePath: '/static/chunks' } }),
+      // nextjs project needs to add config.watchOptions = ['**/node_modules/**', '**/@mf-types/**'] to prevent loop types update
+      dts: this._options.dts ?? false,
+      shareStrategy: this._options.shareStrategy ?? 'loaded-first',
+      experiments: {
+        federationRuntime: 'hoisted',
       },
     };
   }

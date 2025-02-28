@@ -22,3 +22,23 @@ export const EncodedNameTransformMap = {
 };
 
 export const SEPARATOR = ':';
+
+export const ManifestFileName = 'mf-manifest.json';
+export const StatsFileName = 'mf-stats.json';
+
+export const MFModuleType = {
+  NPM: 'npm',
+  APP: 'app',
+};
+
+export const MODULE_DEVTOOL_IDENTIFIER = '__MF_DEVTOOLS_MODULE_INFO__';
+export const ENCODE_NAME_PREFIX = 'ENCODE_NAME_PREFIX';
+export const TEMP_DIR = '.federation';
+
+export const MFPrefetchCommon = {
+  identifier: 'MFDataPrefetch',
+  globalKey: '__PREFETCH__',
+  library: 'mf-data-prefetch',
+  exportsKey: '__PREFETCH_EXPORTS__',
+  fileName: 'bootstrap.js',
+};

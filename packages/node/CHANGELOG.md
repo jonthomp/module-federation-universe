@@ -1,4 +1,992 @@
-# [2.1.0-canary.6](https://github.com/module-federation/universe/compare/node-2.1.0-canary.5...node-2.1.0-canary.6) (2023-11-21)
+# @module-federation/node
+
+## 2.6.27
+
+### Patch Changes
+
+- Updated dependencies [35d925b]
+- Updated dependencies [35d925b]
+- Updated dependencies [8acd217]
+  - @module-federation/sdk@0.9.1
+  - @module-federation/enhanced@0.9.1
+  - @module-federation/runtime@0.9.1
+  - @module-federation/utilities@3.1.45
+
+## 2.6.26
+
+### Patch Changes
+
+- @module-federation/enhanced@0.9.0
+- @module-federation/runtime@0.9.0
+- @module-federation/sdk@0.9.0
+- @module-federation/utilities@3.1.44
+
+## 2.6.25
+
+### Patch Changes
+
+- Updated dependencies [9062cee]
+  - @module-federation/enhanced@0.8.12
+  - @module-federation/runtime@0.8.12
+  - @module-federation/sdk@0.8.12
+  - @module-federation/utilities@3.1.43
+
+## 2.6.24
+
+### Patch Changes
+
+- @module-federation/runtime@0.8.11
+- @module-federation/enhanced@0.8.11
+- @module-federation/sdk@0.8.11
+- @module-federation/utilities@3.1.42
+
+## 2.6.23
+
+### Patch Changes
+
+- @module-federation/runtime@0.8.10
+- @module-federation/enhanced@0.8.10
+- @module-federation/sdk@0.8.10
+- @module-federation/utilities@3.1.41
+
+## 2.6.22
+
+### Patch Changes
+
+- Updated dependencies [6e3afc6]
+  - @module-federation/enhanced@0.8.9
+  - @module-federation/runtime@0.8.9
+  - @module-federation/sdk@0.8.9
+  - @module-federation/utilities@3.1.40
+
+## 2.6.21
+
+### Patch Changes
+
+- Updated dependencies [eda5184]
+  - @module-federation/enhanced@0.8.8
+  - @module-federation/runtime@0.8.8
+  - @module-federation/sdk@0.8.8
+  - @module-federation/utilities@3.1.39
+
+## 2.6.20
+
+### Patch Changes
+
+- Updated dependencies [835b09c]
+- Updated dependencies [f573ad0]
+- Updated dependencies [336f3d8]
+- Updated dependencies [4fd33fb]
+  - @module-federation/sdk@0.8.7
+  - @module-federation/enhanced@0.8.7
+  - @module-federation/runtime@0.8.7
+  - @module-federation/utilities@3.1.38
+
+## 2.6.19
+
+### Patch Changes
+
+- @module-federation/enhanced@0.8.6
+- @module-federation/runtime@0.8.6
+- @module-federation/sdk@0.8.6
+- @module-federation/utilities@3.1.37
+
+## 2.6.18
+
+### Patch Changes
+
+- @module-federation/runtime@0.8.5
+- @module-federation/enhanced@0.8.5
+- @module-federation/sdk@0.8.5
+- @module-federation/utilities@3.1.36
+
+## 2.6.17
+
+### Patch Changes
+
+- @module-federation/enhanced@0.8.4
+- @module-federation/runtime@0.8.4
+- @module-federation/sdk@0.8.4
+- @module-federation/utilities@3.1.35
+
+## 2.6.16
+
+### Patch Changes
+
+- Updated dependencies [f817674]
+- Updated dependencies [8e172c8]
+  - @module-federation/runtime@0.8.3
+  - @module-federation/sdk@0.8.3
+  - @module-federation/enhanced@0.8.3
+  - @module-federation/utilities@3.1.34
+
+## 2.6.15
+
+### Patch Changes
+
+- Updated dependencies [fa7a0bd]
+  - @module-federation/runtime@0.8.2
+  - @module-federation/enhanced@0.8.2
+  - @module-federation/sdk@0.8.2
+  - @module-federation/utilities@3.1.33
+
+## 2.6.14
+
+### Patch Changes
+
+- @module-federation/enhanced@0.8.1
+- @module-federation/runtime@0.8.1
+- @module-federation/sdk@0.8.1
+- @module-federation/utilities@3.1.32
+
+## 2.6.13
+
+### Patch Changes
+
+- @module-federation/runtime@0.8.0
+- @module-federation/enhanced@0.8.0
+- @module-federation/sdk@0.8.0
+- @module-federation/utilities@3.1.31
+
+## 2.6.12
+
+### Patch Changes
+
+- Updated dependencies [a960c88]
+- Updated dependencies [e26d107]
+  - @module-federation/runtime@0.7.7
+  - @module-federation/enhanced@0.7.7
+  - @module-federation/sdk@0.7.7
+  - @module-federation/utilities@3.1.30
+
+## 2.6.11
+
+### Patch Changes
+
+- 6d35cf7: use eval for require to avoid bundler warnings
+  - @module-federation/runtime@0.7.6
+  - @module-federation/enhanced@0.7.6
+  - @module-federation/sdk@0.7.6
+  - @module-federation/utilities@3.1.29
+
+## 2.6.10
+
+### Patch Changes
+
+- Updated dependencies [5613265]
+  - @module-federation/enhanced@0.7.5
+  - @module-federation/runtime@0.7.5
+  - @module-federation/sdk@0.7.5
+  - @module-federation/utilities@3.1.28
+
+## 2.6.9
+
+### Patch Changes
+
+- Updated dependencies [ff8ce29]
+  - @module-federation/runtime@0.7.4
+  - @module-federation/enhanced@0.7.4
+  - @module-federation/sdk@0.7.4
+  - @module-federation/utilities@3.1.27
+
+## 2.6.8
+
+### Patch Changes
+
+- Updated dependencies [4ab9295]
+- Updated dependencies [c2b1efa]
+  - @module-federation/utilities@3.1.26
+  - @module-federation/runtime@0.7.3
+  - @module-federation/sdk@0.7.3
+  - @module-federation/enhanced@0.7.3
+
+## 2.6.7
+
+### Patch Changes
+
+- @module-federation/enhanced@0.7.2
+- @module-federation/runtime@0.7.2
+- @module-federation/sdk@0.7.2
+- @module-federation/utilities@3.1.25
+
+## 2.6.6
+
+### Patch Changes
+
+- 66ba7b1: fix: clear globalLoading cache in node env
+- Updated dependencies [66ba7b1]
+- Updated dependencies [8712967]
+- Updated dependencies [6db4c5f]
+- Updated dependencies [47fdbc2]
+  - @module-federation/runtime@0.7.1
+  - @module-federation/sdk@0.7.1
+  - @module-federation/enhanced@0.7.1
+  - @module-federation/utilities@3.1.24
+
+## 2.6.5
+
+### Patch Changes
+
+- Updated dependencies [752537b]
+- Updated dependencies [54bfd1c]
+- Updated dependencies [879ad87]
+- Updated dependencies [4eb09e7]
+- Updated dependencies [206b56d]
+  - @module-federation/runtime@0.7.0
+  - @module-federation/sdk@0.7.0
+  - @module-federation/enhanced@0.7.0
+  - @module-federation/utilities@3.1.23
+
+## 2.6.4
+
+### Patch Changes
+
+- Updated dependencies [f779188]
+- Updated dependencies [024df60]
+  - @module-federation/sdk@0.6.16
+  - @module-federation/runtime@0.6.16
+  - @module-federation/enhanced@0.6.16
+  - @module-federation/utilities@3.1.22
+
+## 2.6.3
+
+### Patch Changes
+
+- Updated dependencies [ec31539]
+  - @module-federation/runtime@0.6.15
+  - @module-federation/enhanced@0.6.15
+  - @module-federation/sdk@0.6.15
+  - @module-federation/utilities@3.1.21
+
+## 2.6.2
+
+### Patch Changes
+
+- 87a2862: add optional check while accessing webpack internals
+- Updated dependencies [ad605d2]
+  - @module-federation/enhanced@0.6.14
+  - @module-federation/runtime@0.6.14
+  - @module-federation/sdk@0.6.14
+  - @module-federation/utilities@3.1.20
+
+## 2.6.1
+
+### Patch Changes
+
+- f1b8848: Improved error handling and cache clearing process in hot-reload utility.
+
+  - Added error handling with try-catch block to manage potential exceptions when clearing the path cache.
+  - Replaced direct use of module with a reference to currentChunk for cache path operations.
+  - Ensured compatibility with TypeScript by adding @ts-ignore annotations where necessary.
+
+  ```
+  - @module-federation/runtime@0.6.13
+  - @module-federation/enhanced@0.6.13
+  - @module-federation/sdk@0.6.13
+  - @module-federation/utilities@3.1.19
+  ```
+
+## 2.6.0
+
+### Minor Changes
+
+- 1478f50: Enhanced hot-reload functionality with module decaching and improved type safety.
+
+  - Added `callsite` package for resolving module paths.
+  - Implemented `decache` and `searchCache` functions to remove modules from cache safely.
+    - Ensure proper handling of relative module paths.
+    - Avoid issues with native modules during decaching.
+  - Refactored hot-reload logic to use the new decache functionality.
+  - Improved type definitions and type safety throughout `hot-reload.ts`.
+    - Properly typed function return values.
+    - Added TypeScript annotations for better clarity.
+
+### Patch Changes
+
+- 1478f50: Add global flag `moduleGraphDirty` to control forced revalidation in hot-reload.
+
+  - Introduced new global variable `moduleGraphDirty`.
+    - Initialized `moduleGraphDirty` to `false` in the global scope.
+  - Modified `revalidate` function to check `moduleGraphDirty` flag.
+    - Forces revalidation if `moduleGraphDirty` is `true`.
+  - @module-federation/runtime@0.6.12
+  - @module-federation/enhanced@0.6.12
+  - @module-federation/sdk@0.6.12
+  - @module-federation/utilities@3.1.18
+
+## 2.5.21
+
+### Patch Changes
+
+- Updated dependencies [ea6d417]
+- Updated dependencies [d5a3072]
+  - @module-federation/runtime@0.6.11
+  - @module-federation/sdk@0.6.11
+  - @module-federation/enhanced@0.6.11
+  - @module-federation/utilities@3.1.17
+
+## 2.5.20
+
+### Patch Changes
+
+- Updated dependencies [6b02145]
+- Updated dependencies [b704f30]
+- Updated dependencies [22a3b83]
+  - @module-federation/enhanced@0.6.10
+  - @module-federation/runtime@0.6.10
+  - @module-federation/sdk@0.6.10
+  - @module-federation/utilities@3.1.16
+
+## 2.5.19
+
+### Patch Changes
+
+- Updated dependencies [70a1708]
+  - @module-federation/enhanced@0.6.9
+  - @module-federation/runtime@0.6.9
+  - @module-federation/sdk@0.6.9
+  - @module-federation/utilities@3.1.15
+
+## 2.5.18
+
+### Patch Changes
+
+- Updated dependencies [32db0ac]
+- Updated dependencies [32db0ac]
+- Updated dependencies [6c5f444]
+- Updated dependencies [fac6ecf]
+  - @module-federation/sdk@0.6.8
+  - @module-federation/runtime@0.6.8
+  - @module-federation/enhanced@0.6.8
+  - @module-federation/utilities@3.1.14
+
+## 2.5.17
+
+### Patch Changes
+
+- Updated dependencies [1b6bf0e]
+- Updated dependencies [9e32644]
+- Updated dependencies [9e32644]
+- Updated dependencies [9e32644]
+- Updated dependencies [9e32644]
+- Updated dependencies [9e32644]
+- Updated dependencies [9e32644]
+  - @module-federation/enhanced@0.6.7
+  - @module-federation/runtime@0.6.7
+  - @module-federation/sdk@0.6.7
+  - @module-federation/utilities@3.1.13
+
+## 2.5.16
+
+### Patch Changes
+
+- @module-federation/enhanced@0.6.6
+- @module-federation/runtime@0.6.6
+- @module-federation/sdk@0.6.6
+- @module-federation/utilities@3.1.12
+
+## 2.5.15
+
+### Patch Changes
+
+- @module-federation/enhanced@0.6.5
+- @module-federation/runtime@0.6.5
+- @module-federation/sdk@0.6.5
+- @module-federation/utilities@3.1.11
+
+## 2.5.14
+
+### Patch Changes
+
+- @module-federation/enhanced@0.6.4
+- @module-federation/runtime@0.6.4
+- @module-federation/sdk@0.6.4
+- @module-federation/utilities@3.1.10
+
+## 2.5.13
+
+### Patch Changes
+
+- @module-federation/runtime@0.6.3
+- @module-federation/enhanced@0.6.3
+- @module-federation/sdk@0.6.3
+- @module-federation/utilities@3.1.9
+
+## 2.5.12
+
+### Patch Changes
+
+- Updated dependencies [9f98292]
+  - @module-federation/runtime@0.6.2
+  - @module-federation/enhanced@0.6.2
+  - @module-federation/sdk@0.6.2
+  - @module-federation/utilities@3.1.8
+
+## 2.5.11
+
+### Patch Changes
+
+- 2855583: remove old experiment flag from node plugin
+- Updated dependencies [2855583]
+- Updated dependencies [2855583]
+- Updated dependencies [2855583]
+- Updated dependencies [813680f]
+  - @module-federation/enhanced@0.6.1
+  - @module-federation/runtime@0.6.1
+  - @module-federation/sdk@0.6.1
+  - @module-federation/utilities@3.1.7
+
+## 2.5.10
+
+### Patch Changes
+
+- Updated dependencies [f245bb3]
+- Updated dependencies [1d9bb77]
+  - @module-federation/enhanced@0.6.0
+  - @module-federation/sdk@0.6.0
+  - @module-federation/runtime@0.6.0
+  - @module-federation/utilities@3.1.6
+
+## 2.5.9
+
+### Patch Changes
+
+- Updated dependencies [24ba96e]
+- Updated dependencies [b90fa7d]
+  - @module-federation/runtime@0.5.2
+  - @module-federation/enhanced@0.5.2
+  - @module-federation/sdk@0.5.2
+  - @module-federation/utilities@3.1.5
+
+## 2.5.8
+
+### Patch Changes
+
+- @module-federation/enhanced@0.5.1
+- @module-federation/runtime@0.5.1
+- @module-federation/sdk@0.5.1
+- @module-federation/utilities@3.1.4
+
+## 2.5.7
+
+### Patch Changes
+
+- Updated dependencies [8378a77]
+- Updated dependencies [5c7ac8a]
+  - @module-federation/runtime@0.5.0
+  - @module-federation/sdk@0.5.0
+  - @module-federation/enhanced@0.5.0
+  - @module-federation/utilities@3.1.3
+
+## 2.5.6
+
+### Patch Changes
+
+- Updated dependencies [a335707]
+- Updated dependencies [f2f02c9]
+- Updated dependencies [a6e2bed]
+- Updated dependencies [a6e2bed]
+  - @module-federation/enhanced@0.4.0
+  - @module-federation/runtime@0.4.0
+  - @module-federation/sdk@0.4.0
+  - @module-federation/utilities@3.1.2
+
+## 2.5.5
+
+### Patch Changes
+
+- Updated dependencies [59db2fd]
+  - @module-federation/enhanced@0.3.5
+  - @module-federation/runtime@0.3.5
+  - @module-federation/sdk@0.3.5
+  - @module-federation/utilities@3.1.1
+
+## 2.5.4
+
+### Patch Changes
+
+- Updated dependencies [67ea678]
+- Updated dependencies [d26d7e6]
+- Updated dependencies [bb1e471]
+  - @module-federation/runtime@0.3.4
+  - @module-federation/utilities@3.1.0
+  - @module-federation/enhanced@0.3.4
+  - @module-federation/sdk@0.3.4
+
+## 2.5.3
+
+### Patch Changes
+
+- 85c6a12: fix: support rspack ssr live reload
+  - @module-federation/runtime@0.3.3
+  - @module-federation/enhanced@0.3.3
+  - @module-federation/sdk@0.3.3
+  - @module-federation/utilities@3.0.39
+
+## 2.5.2
+
+### Patch Changes
+
+- Updated dependencies [85ae159]
+  - @module-federation/enhanced@0.3.2
+  - @module-federation/runtime@0.3.2
+  - @module-federation/sdk@0.3.2
+  - @module-federation/utilities@3.0.38
+
+## 2.5.1
+
+### Patch Changes
+
+- @module-federation/enhanced@0.3.1
+- @module-federation/runtime@0.3.1
+- @module-federation/sdk@0.3.1
+- @module-federation/utilities@3.0.37
+
+## 2.5.0
+
+### Minor Changes
+
+- fa37cc4: feat: support modern.js ssr [#2348](https://github.com/module-federation/core/issues/2348)
+
+### Patch Changes
+
+- Updated dependencies [fa37cc4]
+  - @module-federation/enhanced@0.3.0
+  - @module-federation/runtime@0.3.0
+  - @module-federation/sdk@0.3.0
+  - @module-federation/utilities@3.0.36
+
+## 2.4.2
+
+### Patch Changes
+
+- @module-federation/enhanced@0.2.8
+- @module-federation/runtime@0.2.8
+- @module-federation/sdk@0.2.8
+- @module-federation/utilities@3.0.35
+
+## 2.4.1
+
+### Patch Changes
+
+- Updated dependencies [b00ef13]
+  - @module-federation/enhanced@0.2.7
+  - @module-federation/sdk@0.2.7
+  - @module-federation/runtime@0.2.7
+  - @module-federation/utilities@3.0.34
+
+## 2.4.0
+
+### Minor Changes
+
+- 91bf689: dynamic import callback handler passed to vm. may require NODE_OPTIONS="--experimental-vm-modules"
+
+### Patch Changes
+
+- 54bcdd1: remove loggers from node runtime plugin
+- Updated dependencies [4488064]
+- Updated dependencies [91bf689]
+  - @module-federation/enhanced@0.2.6
+  - @module-federation/sdk@0.2.6
+  - @module-federation/runtime@0.2.6
+  - @module-federation/utilities@3.0.33
+
+## 2.3.2
+
+### Patch Changes
+
+- Updated dependencies [8cce571]
+  - @module-federation/runtime@0.2.5
+  - @module-federation/sdk@0.2.5
+  - @module-federation/enhanced@0.2.5
+  - @module-federation/utilities@3.0.32
+
+## 2.3.1
+
+### Patch Changes
+
+- Updated dependencies [60cd259]
+- Updated dependencies [09b792d]
+- Updated dependencies [09b792d]
+  - @module-federation/runtime@0.2.4
+  - @module-federation/sdk@0.2.4
+  - @module-federation/enhanced@0.2.4
+  - @module-federation/utilities@3.0.31
+
+## 2.3.0
+
+### Minor Changes
+
+- 32f26af: fetch hook supported in node runtime plugin
+
+### Patch Changes
+
+- 32f26af: allow fetch override on runtime plugin with globalThis.webpackChunkLoad
+- Updated dependencies [32f26af]
+- Updated dependencies [32f26af]
+- Updated dependencies [32f26af]
+  - @module-federation/sdk@0.2.3
+  - @module-federation/runtime@0.2.3
+  - @module-federation/enhanced@0.2.3
+  - @module-federation/utilities@3.0.30
+
+## 2.2.15
+
+### Patch Changes
+
+- @module-federation/enhanced@0.2.2
+- @module-federation/runtime@0.2.2
+- @module-federation/sdk@0.2.2
+- @module-federation/utilities@3.0.29
+
+## 2.2.14
+
+### Patch Changes
+
+- Updated dependencies [88445e7]
+  - @module-federation/enhanced@0.2.1
+  - @module-federation/sdk@0.2.1
+  - @module-federation/runtime@0.2.1
+  - @module-federation/utilities@3.0.28
+
+## 2.2.13
+
+### Patch Changes
+
+- @module-federation/enhanced@0.2.0
+- @module-federation/runtime@0.2.0
+- @module-federation/sdk@0.2.0
+- @module-federation/utilities@3.0.27
+
+## 2.2.12
+
+### Patch Changes
+
+- Updated dependencies [88900ad]
+- Updated dependencies [1e93c5e]
+  - @module-federation/sdk@0.1.21
+  - @module-federation/enhanced@0.1.21
+  - @module-federation/runtime@0.1.21
+  - @module-federation/utilities@3.0.26
+
+## 2.2.11
+
+### Patch Changes
+
+- Updated dependencies [766de80]
+- Updated dependencies [652c8a2]
+- Updated dependencies [685c607]
+- Updated dependencies [d5ac542]
+- Updated dependencies [05c43f3]
+- Updated dependencies [e8e0969]
+- Updated dependencies [349c381]
+  - @module-federation/enhanced@0.1.20
+  - @module-federation/runtime@0.1.20
+  - @module-federation/sdk@0.1.20
+  - @module-federation/utilities@3.0.25
+
+## 2.2.10
+
+### Patch Changes
+
+- Updated dependencies [031454d]
+- Updated dependencies [e1518e2]
+- Updated dependencies [b0a31a7]
+- Updated dependencies [a2bfb9b]
+  - @module-federation/runtime@0.1.19
+  - @module-federation/sdk@0.1.19
+  - @module-federation/enhanced@0.1.19
+  - @module-federation/utilities@3.0.24
+
+## 2.2.9
+
+### Patch Changes
+
+- Updated dependencies [80af3f3]
+- Updated dependencies [80af3f3]
+  - @module-federation/runtime@0.1.18
+  - @module-federation/sdk@0.1.18
+  - @module-federation/enhanced@0.1.18
+  - @module-federation/utilities@3.0.23
+
+## 2.2.8
+
+### Patch Changes
+
+- Updated dependencies [26bff6e]
+  - @module-federation/runtime@0.1.17
+  - @module-federation/enhanced@0.1.17
+  - @module-federation/sdk@0.1.17
+  - @module-federation/utilities@3.0.22
+
+## 2.2.7
+
+### Patch Changes
+
+- Updated dependencies [103cd07]
+- Updated dependencies [425fc9d]
+- Updated dependencies [364f2bc]
+  - @module-federation/runtime@0.1.16
+  - @module-federation/sdk@0.1.16
+  - @module-federation/enhanced@0.1.16
+  - @module-federation/utilities@3.0.21
+
+## 2.2.6
+
+### Patch Changes
+
+- @module-federation/enhanced@0.1.15
+- @module-federation/runtime@0.1.15
+- @module-federation/sdk@0.1.15
+- @module-federation/utilities@3.0.20
+
+## 2.2.5
+
+### Patch Changes
+
+- 450c224: missing variable in runtime plugin error call
+- Updated dependencies [103b2b8]
+  - @module-federation/runtime@0.1.14
+  - @module-federation/sdk@0.1.14
+  - @module-federation/enhanced@0.1.14
+  - @module-federation/utilities@3.0.19
+
+## 2.2.4
+
+### Patch Changes
+
+- 890fff8: fix missing variable in runtime plugin when setting to global for script types
+- Updated dependencies [d259a37]
+- Updated dependencies [08740a0]
+- Updated dependencies [0113b81]
+- Updated dependencies [d259a37]
+- Updated dependencies [2e52e51]
+  - @module-federation/runtime@0.1.13
+  - @module-federation/enhanced@0.1.13
+  - @module-federation/sdk@0.1.13
+  - @module-federation/utilities@3.0.18
+
+## 2.2.3
+
+### Patch Changes
+
+- 7d0a049: fix chunk load logic order of runtime plugin
+- Updated dependencies [371d1f1]
+  - @module-federation/runtime@0.1.12
+  - @module-federation/enhanced@0.1.12
+  - @module-federation/sdk@0.1.12
+  - @module-federation/utilities@3.0.17
+
+## 2.2.2
+
+### Patch Changes
+
+- Updated dependencies [328cd99]
+- Updated dependencies [d45ee54]
+- Updated dependencies [3d2c63a]
+  - @module-federation/runtime@0.1.11
+  - @module-federation/enhanced@0.1.11
+  - @module-federation/sdk@0.1.11
+  - @module-federation/utilities@3.0.16
+
+## 2.2.1
+
+### Patch Changes
+
+- @module-federation/enhanced@0.1.10
+- @module-federation/runtime@0.1.10
+- @module-federation/sdk@0.1.10
+- @module-federation/utilities@3.0.15
+
+## 2.2.0
+
+### Minor Changes
+
+- f3b764a: Node Runtime Plugin implementation and options
+
+### Patch Changes
+
+- Updated dependencies [fcbae83]
+- Updated dependencies [5ef0150]
+  - @module-federation/enhanced@0.1.9
+  - @module-federation/runtime@0.1.9
+  - @module-federation/sdk@0.1.9
+  - @module-federation/utilities@3.0.14
+
+## 2.1.8
+
+### Patch Changes
+
+- Updated dependencies [56eb56a]
+- Updated dependencies [b120511]
+  - @module-federation/enhanced@0.1.8
+  - @module-federation/runtime@0.1.8
+  - @module-federation/sdk@0.1.8
+  - @module-federation/utilities@3.0.13
+
+## 2.1.7
+
+### Patch Changes
+
+- Updated dependencies [648353b]
+- Updated dependencies [648353b]
+- Updated dependencies [35ebb46]
+  - @module-federation/runtime@0.1.7
+  - @module-federation/enhanced@0.1.7
+  - @module-federation/sdk@0.1.7
+  - @module-federation/utilities@3.0.12
+
+## 2.1.6
+
+### Patch Changes
+
+- 72c7b80: chore: fix release tag
+- Updated dependencies [72c7b80]
+  - @module-federation/runtime@0.1.6
+  - @module-federation/enhanced@0.1.6
+  - @module-federation/sdk@0.1.6
+  - @module-federation/utilities@3.0.11
+
+## 2.1.5
+
+### Patch Changes
+
+- Updated dependencies [876a4ff]
+- Updated dependencies [e0acf83]
+- Updated dependencies [ca271ab]
+- Updated dependencies [f26aa2d]
+- Updated dependencies [1a9c6e7]
+  - @module-federation/runtime@0.1.5
+  - @module-federation/enhanced@0.1.5
+  - @module-federation/sdk@0.1.5
+  - @module-federation/utilities@3.0.10
+
+## 2.1.4
+
+### Patch Changes
+
+- Updated dependencies [8f3a440]
+- Updated dependencies [2f697b9]
+- Updated dependencies [8f3a440]
+  - @module-federation/enhanced@0.1.4
+  - @module-federation/sdk@0.1.4
+  - @module-federation/runtime@0.1.4
+  - @module-federation/utilities@3.0.9
+
+## 2.1.3
+
+### Patch Changes
+
+- Updated dependencies [6b3b210]
+- Updated dependencies [32eba3c]
+- Updated dependencies [6b3b210]
+  - @module-federation/runtime@0.1.3
+  - @module-federation/enhanced@0.1.3
+  - @module-federation/sdk@0.1.3
+  - @module-federation/utilities@3.0.8
+
+## 2.1.2
+
+### Patch Changes
+
+- 1bb03d1: chore: enhanced export runtime
+- Updated dependencies [c1efbbf]
+- Updated dependencies [c8c0ad2]
+- Updated dependencies [1bb03d1]
+- Updated dependencies [1bb03d1]
+- Updated dependencies [f9335c7]
+  - @module-federation/enhanced@0.1.2
+  - @module-federation/sdk@0.1.2
+  - @module-federation/utilities@3.0.7
+  - @module-federation/runtime@0.1.2
+
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [ee57fb0]
+  - @module-federation/enhanced@0.1.1
+  - @module-federation/runtime@0.1.1
+  - @module-federation/sdk@0.1.1
+
+## 2.1.0
+
+### Minor Changes
+
+- df3ef24: entry tracking and improved hot reloading for node
+
+### Patch Changes
+
+- Updated dependencies [df3ef24]
+- Updated dependencies [df3ef24]
+- Updated dependencies [df3ef24]
+- Updated dependencies [df3ef24]
+- Updated dependencies [df3ef24]
+  - @module-federation/enhanced@0.1.0
+  - @module-federation/runtime@0.1.0
+  - @module-federation/sdk@0.1.0
+
+## 2.0.15
+
+### Patch Changes
+
+- Updated dependencies [ce0597e]
+  - @module-federation/runtime@0.0.17
+  - @module-federation/enhanced@0.0.17
+  - @module-federation/sdk@0.0.17
+
+## 2.0.14
+
+### Patch Changes
+
+- @module-federation/enhanced@0.0.16
+- @module-federation/runtime@0.0.16
+- @module-federation/sdk@0.0.16
+
+## 2.0.13
+
+### Patch Changes
+
+- Updated dependencies [3a45d99]
+- Updated dependencies [ba5bedd]
+- Updated dependencies [6e9b6d5]
+  - @module-federation/sdk@0.0.15
+  - @module-federation/enhanced@0.0.15
+  - @module-federation/runtime@0.0.15
+
+## 2.0.12
+
+### Patch Changes
+
+- a050645: Expose node script loaders to bundler runtime. Replace require.loadScript from federation/node to use federation.runtime.loadScriptNode
+- d21216a: add encoding peer dependency for node-fetch
+- Updated dependencies [a050645]
+- Updated dependencies [4fc20cc]
+- Updated dependencies [cd8c7bf]
+- Updated dependencies [5576c6b]
+- Updated dependencies [a050645]
+  - @module-federation/runtime@0.0.14
+  - @module-federation/sdk@0.0.14
+  - @module-federation/utilities@3.0.6
+  - @module-federation/enhanced@0.0.14
+
+## 2.0.11
+
+### Patch Changes
+
+- Updated dependencies [804447c]
+  - @module-federation/runtime@0.0.13
+  - @module-federation/sdk@0.0.13
+  - @module-federation/enhanced@0.0.13
+
+## 2.0.10
+
+### Patch Changes
+
+- Updated dependencies [4ca0c7b]
+  - @module-federation/enhanced@0.0.12
+  - @module-federation/runtime@0.0.12
+  - @module-federation/sdk@0.0.12
 
 ## 2.0.9
 
@@ -76,141 +1064,141 @@
 
 ### Bug Fixes
 
-- align with bytedance linting ([8000055](https://github.com/module-federation/universe/commit/800005571f37e0d1b31590834ddcd4d98bbd3086))
-- **enhanced:** refactory async boundary plugin ([230a105](https://github.com/module-federation/universe/commit/230a105b230ba108318d3e0aab6bea8e94fb3699))
+- align with bytedance linting ([8000055](https://github.com/module-federation/core/commit/800005571f37e0d1b31590834ddcd4d98bbd3086))
+- **enhanced:** refactory async boundary plugin ([230a105](https://github.com/module-federation/core/commit/230a105b230ba108318d3e0aab6bea8e94fb3699))
 
-# [2.1.0-canary.5](https://github.com/module-federation/universe/compare/node-2.1.0-canary.4...node-2.1.0-canary.5) (2023-11-20)
+# [2.1.0-canary.5](https://github.com/module-federation/core/compare/node-2.1.0-canary.4...node-2.1.0-canary.5) (2023-11-20)
 
 ### Bug Fixes
 
-- **enhanced:** use getAllReferencedChunks api for federation indexing ([b8846be](https://github.com/module-federation/universe/commit/b8846be5135c58841c3c22453e45751bebbecdeb))
-- **nextjs-mf:** Improved async startup dep track ([839e47b](https://github.com/module-federation/universe/commit/839e47bc7e1b887f0729c17257e6dd17cc3e3a5d))
-- nx build dep sync ([38c0902](https://github.com/module-federation/universe/commit/38c09025aeee8b3bb91f45721678d59ff814b8ba))
-- rename plugin took tap ([b1e0f58](https://github.com/module-federation/universe/commit/b1e0f58d689a60223b03277fbffe3c5bd18dd481))
+- **enhanced:** use getAllReferencedChunks api for federation indexing ([b8846be](https://github.com/module-federation/core/commit/b8846be5135c58841c3c22453e45751bebbecdeb))
+- **nextjs-mf:** Improved async startup dep track ([839e47b](https://github.com/module-federation/core/commit/839e47bc7e1b887f0729c17257e6dd17cc3e3a5d))
+- nx build dep sync ([38c0902](https://github.com/module-federation/core/commit/38c09025aeee8b3bb91f45721678d59ff814b8ba))
+- rename plugin took tap ([b1e0f58](https://github.com/module-federation/core/commit/b1e0f58d689a60223b03277fbffe3c5bd18dd481))
 
 ### Features
 
-- **enhanced:** ✨ Reference Hoisting ([6ab3e72](https://github.com/module-federation/universe/commit/6ab3e72b147bf8338a4e50fee2ff49cc79c53195))
-- **enhanced:** HoistContainerReferencesPlugin ([adc00e7](https://github.com/module-federation/universe/commit/adc00e744522d3a96cbac7ff4f6fdfa435f77896))
-- **nextjs-mf:** Use HoistReferencePlugin over DelegatePlugin ([e8f1e43](https://github.com/module-federation/universe/commit/e8f1e437f13ad0b922c7e147c4911d83ebf1b226))
+- **enhanced:** ✨ Reference Hoisting ([6ab3e72](https://github.com/module-federation/core/commit/6ab3e72b147bf8338a4e50fee2ff49cc79c53195))
+- **enhanced:** HoistContainerReferencesPlugin ([adc00e7](https://github.com/module-federation/core/commit/adc00e744522d3a96cbac7ff4f6fdfa435f77896))
+- **nextjs-mf:** Use HoistReferencePlugin over DelegatePlugin ([e8f1e43](https://github.com/module-federation/core/commit/e8f1e437f13ad0b922c7e147c4911d83ebf1b226))
 
-# [2.1.0-canary.4](https://github.com/module-federation/universe/compare/node-2.1.0-canary.3...node-2.1.0-canary.4) (2023-11-08)
-
-### Bug Fixes
-
-- **enhanced:** correct schema validation issues ([5a04a81](https://github.com/module-federation/universe/commit/5a04a812f505ab8287d206abd0a6996057a994fc))
-
-# [2.1.0-canary.3](https://github.com/module-federation/universe/compare/node-2.1.0-canary.2...node-2.1.0-canary.3) (2023-11-08)
+# [2.1.0-canary.4](https://github.com/module-federation/core/compare/node-2.1.0-canary.3...node-2.1.0-canary.4) (2023-11-08)
 
 ### Bug Fixes
 
-- fix version missmatch ([2d45df4](https://github.com/module-federation/universe/commit/2d45df485e72471bd2d5b116a050a0ae2416acc1))
+- **enhanced:** correct schema validation issues ([5a04a81](https://github.com/module-federation/core/commit/5a04a812f505ab8287d206abd0a6996057a994fc))
 
-# [2.1.0-canary.2](https://github.com/module-federation/universe/compare/node-2.1.0-canary.1...node-2.1.0-canary.2) (2023-11-07)
+# [2.1.0-canary.3](https://github.com/module-federation/core/compare/node-2.1.0-canary.2...node-2.1.0-canary.3) (2023-11-08)
 
 ### Bug Fixes
 
-- issues with integrated runtime chunk ([edc4d97](https://github.com/module-federation/universe/commit/edc4d97393c8ad04adecc53062f40a80735defb7))
-- issues with integrated runtime chunk ([d4fa90d](https://github.com/module-federation/universe/commit/d4fa90de214e5b15957c208436878d82ce223a22))
-- issues with integrated runtime chunk ([aa1b137](https://github.com/module-federation/universe/commit/aa1b13791e353433d2a219addbef1443b853c2f0))
+- fix version missmatch ([2d45df4](https://github.com/module-federation/core/commit/2d45df485e72471bd2d5b116a050a0ae2416acc1))
+
+# [2.1.0-canary.2](https://github.com/module-federation/core/compare/node-2.1.0-canary.1...node-2.1.0-canary.2) (2023-11-07)
+
+### Bug Fixes
+
+- issues with integrated runtime chunk ([edc4d97](https://github.com/module-federation/core/commit/edc4d97393c8ad04adecc53062f40a80735defb7))
+- issues with integrated runtime chunk ([d4fa90d](https://github.com/module-federation/core/commit/d4fa90de214e5b15957c208436878d82ce223a22))
+- issues with integrated runtime chunk ([aa1b137](https://github.com/module-federation/core/commit/aa1b13791e353433d2a219addbef1443b853c2f0))
 
 ### Features
 
-- **enhanced:** AsyncBoundary support ESM targets and remix_run framework outputs ([0100694](https://github.com/module-federation/universe/commit/0100694a07044460dc44a73cfb4ecff619177457))
+- **enhanced:** AsyncBoundary support ESM targets and remix_run framework outputs ([0100694](https://github.com/module-federation/core/commit/0100694a07044460dc44a73cfb4ecff619177457))
 
-# [2.1.0-canary.1](https://github.com/module-federation/universe/compare/node-2.0.1...node-2.1.0-canary.1) (2023-11-06)
+# [2.1.0-canary.1](https://github.com/module-federation/core/compare/node-2.0.1...node-2.1.0-canary.1) (2023-11-06)
 
 ### Bug Fixes
 
-- add exported file ([19b1afb](https://github.com/module-federation/universe/commit/19b1afbd58572897f36b16926f841e35d154c712))
-- add missing serialize method on RemoteModule ([e7ac801](https://github.com/module-federation/universe/commit/e7ac801151b08dbb5ca025bd8ac03683f792f92f))
-- add override to remoteModule ([875038a](https://github.com/module-federation/universe/commit/875038ad68dfed05822c1bc7c68ae91e57282f4f))
-- Auto Public Path, detect multiple output targets ([65f17b1](https://github.com/module-federation/universe/commit/65f17b189f37e0ad9e72bb0bf04463e9c5455929))
-- bad impleentation during federation port ([cc2e53f](https://github.com/module-federation/universe/commit/cc2e53f0351fb94c9068223ad6b8d990a913ab53))
-- broken versioning issues in consumes ([e7fada2](https://github.com/module-federation/universe/commit/e7fada211b1e58dc52eafeff4210a9ce62636f9d))
-- change exports for module info runtime ([f40c538](https://github.com/module-federation/universe/commit/f40c538221353a61938cadf624c9235ec8eb4cce))
-- chunk flushing ([c9df545](https://github.com/module-federation/universe/commit/c9df5451c84e6458b392884492bf669bf7383d5c))
-- **deps:** update dependency axios to v1.5.1 ([ae9a06a](https://github.com/module-federation/universe/commit/ae9a06a0cc35fad27a0b493a25370b92617c39fb))
-- **deps:** update dependency core-js to v3.33.0 ([30894ca](https://github.com/module-federation/universe/commit/30894cafbe5dea4350dc7c633548038d7ec5f8a8))
-- **deps:** update dependency typedoc to v0.25.2 ([46c6524](https://github.com/module-federation/universe/commit/46c65247e187cee9e15625402c1570ac351bb1fe))
-- **deps:** update dependency undici to v5.25.2 ([da3e539](https://github.com/module-federation/universe/commit/da3e539a41ed23ccb5086b1dd428fbee0f8d652c))
-- **deps:** update dependency undici to v5.25.4 ([1d4f91e](https://github.com/module-federation/universe/commit/1d4f91ec93da4326c8a42eef28f150d5d09738bb))
-- **deps:** update dependency undici to v5.26.2 [security] ([410a8b8](https://github.com/module-federation/universe/commit/410a8b8bd1558dfb5119ae10941d2b3816a0d0e0))
-- **deps:** update dependency unplugin to v1.5.0 ([936b3f8](https://github.com/module-federation/universe/commit/936b3f8d8061fd9d481d1788fb35b88588928d14))
-- dont crash offline remotes ([f0d7671](https://github.com/module-federation/universe/commit/f0d7671569ac34f64017a303739b54880f5220e6))
-- **enhanced:** module info duplication ([49b4a57](https://github.com/module-federation/universe/commit/49b4a5736714c1db4510d10cdd5fe0277123caa8))
-- **enhanced:** syntax issue in proxy ([2e5848b](https://github.com/module-federation/universe/commit/2e5848b4be3e3bba46508a427c1bc8f2d3043c8d))
-- ensure chunk handler exists before calling it ([98ba838](https://github.com/module-federation/universe/commit/98ba838f979bbef11f5d678c3bf27a4de534cf9d))
-- ensure custom FS works with target: node or async node preset ([a08fcab](https://github.com/module-federation/universe/commit/a08fcab7dde903966d34be9dab0b34c8896948ca))
-- export parseRemotes ([12ed54c](https://github.com/module-federation/universe/commit/12ed54c87ba539bc2a79cdee86058f0a2776653e))
-- hot reloading system ([99f733b](https://github.com/module-federation/universe/commit/99f733bbdbd727a99fbaaeab3f92f4b65fa568dd))
-- import utils manually ([2767191](https://github.com/module-federation/universe/commit/2767191467d9d685704b747d42b5f170da233847))
-- improve backward compat **remote_scope** global ([ac0efa3](https://github.com/module-federation/universe/commit/ac0efa37d975a130aa3badc657fa66d723865a5b))
-- improve logic in runtime module info proxy ([8eea1a8](https://github.com/module-federation/universe/commit/8eea1a84ae6a12f69dbb16d00f52ec902efbdda6))
-- legacy scope duplication on recreation ([347e4c9](https://github.com/module-federation/universe/commit/347e4c96e87ff4f28dce319fc6b2fe40f1cbabee))
-- no external helpers ([6c47fd4](https://github.com/module-federation/universe/commit/6c47fd4ce19f2292f6718d201005fba4a8552252))
-- **node:** use ES6 imports and override method in FederationModuleInfoRuntimeModule (#bytedance) ([d420ad9](https://github.com/module-federation/universe/commit/d420ad94b7515123254af45c61704abcc0971511))
-- override semantic-release-plugin-decorators ([18675de](https://github.com/module-federation/universe/commit/18675defef65570d2b3bb6a9caa3fd039badee29))
-- package data ([992d298](https://github.com/module-federation/universe/commit/992d2985c29d0bf86de6739f728fbf64749e7fd0))
-- remote global share scope ([e05d32f](https://github.com/module-federation/universe/commit/e05d32f489880d6b4e0fc21a3807e619a40bc5b3))
-- remove ensure remote runtime module ([d06c082](https://github.com/module-federation/universe/commit/d06c0823435063dcd277897ab551cd3a9c996d3d))
-- remove logger in filesystem ([c370ed5](https://github.com/module-federation/universe/commit/c370ed5fdc5fe3423703f29daa40a4227ac51cf2))
-- remove logging on DFS ([40b8c28](https://github.com/module-federation/universe/commit/40b8c28fac9c39fec8623415a36e487152c2ef34))
-- remove logs from flush chunks ([b7d317c](https://github.com/module-federation/universe/commit/b7d317c4b2b0eda2f3530315dbf471289fa6918b))
-- search registry for both ident and unique name ([f22dc25](https://github.com/module-federation/universe/commit/f22dc25e5a6374273b1bc51b0e101b57226c5906))
-- simplify template ([b4e633b](https://github.com/module-federation/universe/commit/b4e633b6624264456800bc7351c6d815430d42b5))
-- stats plugin updates ([c1db325](https://github.com/module-federation/universe/commit/c1db325d3311b2126964f4ad2ddbfa9d82a50674))
-- switch to @goestav/nx-semantic-release ([63a3350](https://github.com/module-federation/universe/commit/63a3350a6a1a12235e3c9f1e7c724d54f0476356))
-- Ts import error ([6e7974c](https://github.com/module-federation/universe/commit/6e7974c22874378122ab31eea27dddd0604505db))
-- TS imports to webpack ([d506b49](https://github.com/module-federation/universe/commit/d506b492b724ccfb7fdcf6234196ac421564c153))
-- TS imports, missing module methods ([8eb422d](https://github.com/module-federation/universe/commit/8eb422d30e149cb0d96835f036ec73ce1ccafe53))
-- ts in template string ([579b341](https://github.com/module-federation/universe/commit/579b341a5eb38ca6396da15f9667729ab84d2ff6))
-- ts in template string ([37e790a](https://github.com/module-federation/universe/commit/37e790a7b46ff6d8c8fd2c12cfd5629900db1b53))
-- ts in template string ([0edbbea](https://github.com/module-federation/universe/commit/0edbbeaa42503237b88132252e29a34a79bade51))
-- ts in template string ([1d56efd](https://github.com/module-federation/universe/commit/1d56efdf3d0bc78d19d187fe561fbbf453bada87))
-- ts in template string ([9b8f652](https://github.com/module-federation/universe/commit/9b8f652f96bf6f29d5fc238bb616e19187158a57))
-- ts in template string ([113d703](https://github.com/module-federation/universe/commit/113d7037de8238ed0bcf9418ac1bf3d082fbea66))
-- typescript issues ([0a07481](https://github.com/module-federation/universe/commit/0a07481552e1df6b35506165cbc649996004c318))
+- add exported file ([19b1afb](https://github.com/module-federation/core/commit/19b1afbd58572897f36b16926f841e35d154c712))
+- add missing serialize method on RemoteModule ([e7ac801](https://github.com/module-federation/core/commit/e7ac801151b08dbb5ca025bd8ac03683f792f92f))
+- add override to remoteModule ([875038a](https://github.com/module-federation/core/commit/875038ad68dfed05822c1bc7c68ae91e57282f4f))
+- Auto Public Path, detect multiple output targets ([65f17b1](https://github.com/module-federation/core/commit/65f17b189f37e0ad9e72bb0bf04463e9c5455929))
+- bad impleentation during federation port ([cc2e53f](https://github.com/module-federation/core/commit/cc2e53f0351fb94c9068223ad6b8d990a913ab53))
+- broken versioning issues in consumes ([e7fada2](https://github.com/module-federation/core/commit/e7fada211b1e58dc52eafeff4210a9ce62636f9d))
+- change exports for module info runtime ([f40c538](https://github.com/module-federation/core/commit/f40c538221353a61938cadf624c9235ec8eb4cce))
+- chunk flushing ([c9df545](https://github.com/module-federation/core/commit/c9df5451c84e6458b392884492bf669bf7383d5c))
+- **deps:** update dependency axios to v1.5.1 ([ae9a06a](https://github.com/module-federation/core/commit/ae9a06a0cc35fad27a0b493a25370b92617c39fb))
+- **deps:** update dependency core-js to v3.33.0 ([30894ca](https://github.com/module-federation/core/commit/30894cafbe5dea4350dc7c633548038d7ec5f8a8))
+- **deps:** update dependency typedoc to v0.25.2 ([46c6524](https://github.com/module-federation/core/commit/46c65247e187cee9e15625402c1570ac351bb1fe))
+- **deps:** update dependency undici to v5.25.2 ([da3e539](https://github.com/module-federation/core/commit/da3e539a41ed23ccb5086b1dd428fbee0f8d652c))
+- **deps:** update dependency undici to v5.25.4 ([1d4f91e](https://github.com/module-federation/core/commit/1d4f91ec93da4326c8a42eef28f150d5d09738bb))
+- **deps:** update dependency undici to v5.26.2 [security] ([410a8b8](https://github.com/module-federation/core/commit/410a8b8bd1558dfb5119ae10941d2b3816a0d0e0))
+- **deps:** update dependency unplugin to v1.5.0 ([936b3f8](https://github.com/module-federation/core/commit/936b3f8d8061fd9d481d1788fb35b88588928d14))
+- dont crash offline remotes ([f0d7671](https://github.com/module-federation/core/commit/f0d7671569ac34f64017a303739b54880f5220e6))
+- **enhanced:** module info duplication ([49b4a57](https://github.com/module-federation/core/commit/49b4a5736714c1db4510d10cdd5fe0277123caa8))
+- **enhanced:** syntax issue in proxy ([2e5848b](https://github.com/module-federation/core/commit/2e5848b4be3e3bba46508a427c1bc8f2d3043c8d))
+- ensure chunk handler exists before calling it ([98ba838](https://github.com/module-federation/core/commit/98ba838f979bbef11f5d678c3bf27a4de534cf9d))
+- ensure custom FS works with target: node or async node preset ([a08fcab](https://github.com/module-federation/core/commit/a08fcab7dde903966d34be9dab0b34c8896948ca))
+- export parseRemotes ([12ed54c](https://github.com/module-federation/core/commit/12ed54c87ba539bc2a79cdee86058f0a2776653e))
+- hot reloading system ([99f733b](https://github.com/module-federation/core/commit/99f733bbdbd727a99fbaaeab3f92f4b65fa568dd))
+- import utils manually ([2767191](https://github.com/module-federation/core/commit/2767191467d9d685704b747d42b5f170da233847))
+- improve backward compat **remote_scope** global ([ac0efa3](https://github.com/module-federation/core/commit/ac0efa37d975a130aa3badc657fa66d723865a5b))
+- improve logic in runtime module info proxy ([8eea1a8](https://github.com/module-federation/core/commit/8eea1a84ae6a12f69dbb16d00f52ec902efbdda6))
+- legacy scope duplication on recreation ([347e4c9](https://github.com/module-federation/core/commit/347e4c96e87ff4f28dce319fc6b2fe40f1cbabee))
+- no external helpers ([6c47fd4](https://github.com/module-federation/core/commit/6c47fd4ce19f2292f6718d201005fba4a8552252))
+- **node:** use ES6 imports and override method in FederationModuleInfoRuntimeModule (#bytedance) ([d420ad9](https://github.com/module-federation/core/commit/d420ad94b7515123254af45c61704abcc0971511))
+- override semantic-release-plugin-decorators ([18675de](https://github.com/module-federation/core/commit/18675defef65570d2b3bb6a9caa3fd039badee29))
+- package data ([992d298](https://github.com/module-federation/core/commit/992d2985c29d0bf86de6739f728fbf64749e7fd0))
+- remote global share scope ([e05d32f](https://github.com/module-federation/core/commit/e05d32f489880d6b4e0fc21a3807e619a40bc5b3))
+- remove ensure remote runtime module ([d06c082](https://github.com/module-federation/core/commit/d06c0823435063dcd277897ab551cd3a9c996d3d))
+- remove logger in filesystem ([c370ed5](https://github.com/module-federation/core/commit/c370ed5fdc5fe3423703f29daa40a4227ac51cf2))
+- remove logging on DFS ([40b8c28](https://github.com/module-federation/core/commit/40b8c28fac9c39fec8623415a36e487152c2ef34))
+- remove logs from flush chunks ([b7d317c](https://github.com/module-federation/core/commit/b7d317c4b2b0eda2f3530315dbf471289fa6918b))
+- search registry for both ident and unique name ([f22dc25](https://github.com/module-federation/core/commit/f22dc25e5a6374273b1bc51b0e101b57226c5906))
+- simplify template ([b4e633b](https://github.com/module-federation/core/commit/b4e633b6624264456800bc7351c6d815430d42b5))
+- stats plugin updates ([c1db325](https://github.com/module-federation/core/commit/c1db325d3311b2126964f4ad2ddbfa9d82a50674))
+- switch to @goestav/nx-semantic-release ([63a3350](https://github.com/module-federation/core/commit/63a3350a6a1a12235e3c9f1e7c724d54f0476356))
+- Ts import error ([6e7974c](https://github.com/module-federation/core/commit/6e7974c22874378122ab31eea27dddd0604505db))
+- TS imports to webpack ([d506b49](https://github.com/module-federation/core/commit/d506b492b724ccfb7fdcf6234196ac421564c153))
+- TS imports, missing module methods ([8eb422d](https://github.com/module-federation/core/commit/8eb422d30e149cb0d96835f036ec73ce1ccafe53))
+- ts in template string ([579b341](https://github.com/module-federation/core/commit/579b341a5eb38ca6396da15f9667729ab84d2ff6))
+- ts in template string ([37e790a](https://github.com/module-federation/core/commit/37e790a7b46ff6d8c8fd2c12cfd5629900db1b53))
+- ts in template string ([0edbbea](https://github.com/module-federation/core/commit/0edbbeaa42503237b88132252e29a34a79bade51))
+- ts in template string ([1d56efd](https://github.com/module-federation/core/commit/1d56efdf3d0bc78d19d187fe561fbbf453bada87))
+- ts in template string ([9b8f652](https://github.com/module-federation/core/commit/9b8f652f96bf6f29d5fc238bb616e19187158a57))
+- ts in template string ([113d703](https://github.com/module-federation/core/commit/113d7037de8238ed0bcf9418ac1bf3d082fbea66))
+- typescript issues ([0a07481](https://github.com/module-federation/core/commit/0a07481552e1df6b35506165cbc649996004c318))
 
 ### Features
 
-- add auto public path support for remote modules (node_auto_public_path) ([b12c984](https://github.com/module-federation/universe/commit/b12c9841aa55027cb7b77e768ff9c0b456120d51))
-- additional plugin exports ([0604461](https://github.com/module-federation/universe/commit/0604461ea8806d4e064955f5edef571a9a45d8d0))
-- AddRuntimeRequirementToPromiseExternal ([9bc5a20](https://github.com/module-federation/universe/commit/9bc5a20b54228de7d1f2554eee10360a34e8d8a1))
-- AsyncBoundaryPlugin ([00227ca](https://github.com/module-federation/universe/commit/00227cabf3a1e7286148e84d5714e020391771f7))
-- checkInvalidContext as tapable hook ([a3eb553](https://github.com/module-federation/universe/commit/a3eb5537ff462ead2230615f578569ec46199f50))
-- **ContainerEntryModule:** fix TypeScript issue, enhance needBuild method [#398](https://github.com/module-federation/universe/issues/398)a60e ([c561e11](https://github.com/module-federation/universe/commit/c561e111a54b253fd194c3b75041577dda50ad4b)), closes [#398a60](https://github.com/module-federation/universe/issues/398a60)
-- create and expose AutomaticPublicPathPlugin.ts ([9d0fcdd](https://github.com/module-federation/universe/commit/9d0fcdd2e36fae971f2eec3269980baedf276b35))
-- Dynamic Filesystem ([#1274](https://github.com/module-federation/universe/issues/1274)) ([2bec98a](https://github.com/module-federation/universe/commit/2bec98a2472b44898a7f14ec6868a2368cfb6d82))
-- **enhanced:** Fork Module Federation ([8682990](https://github.com/module-federation/universe/commit/8682990e7fec6309ce20572958916f747737af90))
-- **enhanced:** new async boundary plugin design ([a4ac1ac](https://github.com/module-federation/universe/commit/a4ac1acff974f74db6395c31134de14d9c344b6f))
-- **enhanced:** Refactor ContainerEntryDependency and ContainerEntryModule for better code readability and maintainability ([e93e7d2](https://github.com/module-federation/universe/commit/e93e7d2fafe2e22f7d2c613095ce1900d7531f29))
-- **enhanced:** Rewrite Async Boundary based on bytedance version ([fa05dd6](https://github.com/module-federation/universe/commit/fa05dd6bce2dd577b1e3fd84533459a04dbe195a))
-- **enhanced:** Support Async Mode and option ([3c33b8e](https://github.com/module-federation/universe/commit/3c33b8ea3b483de5dcc3e5da9fb40c9826fdb7f7))
-- FederationModuleInfo Runtime Module ([50a1a0c](https://github.com/module-federation/universe/commit/50a1a0c7a37bbe42ab6f2f5559b411567fee0fe9))
-- FederationModuleInfo Runtime Module ([7b09ef6](https://github.com/module-federation/universe/commit/7b09ef6c0f4ee68a1b5caa5f021632059c522b8f))
-- fork module federation ([0ad7430](https://github.com/module-federation/universe/commit/0ad7430f6170458a47144be392133b7b2fa1ade0))
-- implement Bytedance Infra Node Plugin ([82e6801](https://github.com/module-federation/universe/commit/82e680157bbad68fa93800a69149c4c28652cfed))
-- implement Bytedance Infra Node Plugin ([97f283e](https://github.com/module-federation/universe/commit/97f283e4746bf6f048ee27584adde5249c8e577c))
-- improve options logic in node federation plugin ([b69b70d](https://github.com/module-federation/universe/commit/b69b70d200c63e3557089e8a0669fc43330c988c))
-- improved async init ([17b1419](https://github.com/module-federation/universe/commit/17b1419ef31ec5661fa06b9f0c297e2771e2a86c))
-- improved async init ([bb19b07](https://github.com/module-federation/universe/commit/bb19b07b5be1bbc28bd6b049ea7aea6510ad17a2))
-- improved async init ([ae3a450](https://github.com/module-federation/universe/commit/ae3a4503ff9de86492b13029d6334b281ddd9493))
-- improved async init ([019694e](https://github.com/module-federation/universe/commit/019694e55fe1f6bebfdab0701bf9087bf0034b8f))
-- native self forming node federation ([#1291](https://github.com/module-federation/universe/issues/1291)) ([1dd5ed1](https://github.com/module-federation/universe/commit/1dd5ed17c981e036336925e807203e94b58c36d6))
-- new actions, remove gpt integration ([370229e](https://github.com/module-federation/universe/commit/370229e02cc352fcfaeaa0f3cf1f9f2d4966d1bb))
-- **node-remote:** Improve module federation runtime compatibility ([5eb2092](https://github.com/module-federation/universe/commit/5eb209249c44d525c12eff5739bf23a93db08e4f))
-- **node:** auto set public path and improve chunk loading strategy #node_auto_public_path ([65989da](https://github.com/module-federation/universe/commit/65989dab95ee2acee7ec9a5ab321921a278cd078))
-- **node:** enhance error handling and remote container registry in RemotePublicPathRuntimeModule (#bytedance) ([061285e](https://github.com/module-federation/universe/commit/061285e0b6210baa1dd502dc94fd57fd9a8af822))
-- **NodeFederationPlugin:** assign remoteContainerRegistry to importMetaName ([ca33d98](https://github.com/module-federation/universe/commit/ca33d98df63fdb8dac402b1cc0ec8bf95f9f1971))
-- **node:** remove unused import from DynamicFilesystemRuntimeModule ([f9787a9](https://github.com/module-federation/universe/commit/f9787a9a67da936679db388e5c66e012e7452d8a))
-- remove old loadScript hack ([fbe19bc](https://github.com/module-federation/universe/commit/fbe19bc76694c14b6a95c577669c2e8656ede1ba))
-- Static fallback to non auto public path ([3c58780](https://github.com/module-federation/universe/commit/3c587809f1e936fba291eab3d7c790115be5102c))
-- support lazy compilation ([29c234c](https://github.com/module-federation/universe/commit/29c234c14315e000acefc60d635ee486205ca83e))
-- support vmok conventions ([0501da8](https://github.com/module-federation/universe/commit/0501da86eaaab6ea79a3397c2c683086cc591309))
-- support vmok conventions ([d53b586](https://github.com/module-federation/universe/commit/d53b5867719eb7fff32bee2edd3255023d598f44))
-- Use enhanced Federation Plugin ([e021d66](https://github.com/module-federation/universe/commit/e021d6667996962f154137d164bed13f53a6a135))
-- **utilities:** update DelegateModulesPlugin and tests (#node_auto_public_path) ([df8bb79](https://github.com/module-federation/universe/commit/df8bb791c3fedef299cb15960546ff5ad9c665ef))
+- add auto public path support for remote modules (node_auto_public_path) ([b12c984](https://github.com/module-federation/core/commit/b12c9841aa55027cb7b77e768ff9c0b456120d51))
+- additional plugin exports ([0604461](https://github.com/module-federation/core/commit/0604461ea8806d4e064955f5edef571a9a45d8d0))
+- AddRuntimeRequirementToPromiseExternal ([9bc5a20](https://github.com/module-federation/core/commit/9bc5a20b54228de7d1f2554eee10360a34e8d8a1))
+- AsyncBoundaryPlugin ([00227ca](https://github.com/module-federation/core/commit/00227cabf3a1e7286148e84d5714e020391771f7))
+- checkInvalidContext as tapable hook ([a3eb553](https://github.com/module-federation/core/commit/a3eb5537ff462ead2230615f578569ec46199f50))
+- **ContainerEntryModule:** fix TypeScript issue, enhance needBuild method [#398](https://github.com/module-federation/core/issues/398)a60e ([c561e11](https://github.com/module-federation/core/commit/c561e111a54b253fd194c3b75041577dda50ad4b)), closes [#398a60](https://github.com/module-federation/core/issues/398a60)
+- create and expose AutomaticPublicPathPlugin.ts ([9d0fcdd](https://github.com/module-federation/core/commit/9d0fcdd2e36fae971f2eec3269980baedf276b35))
+- Dynamic Filesystem ([#1274](https://github.com/module-federation/core/issues/1274)) ([2bec98a](https://github.com/module-federation/core/commit/2bec98a2472b44898a7f14ec6868a2368cfb6d82))
+- **enhanced:** Fork Module Federation ([8682990](https://github.com/module-federation/core/commit/8682990e7fec6309ce20572958916f747737af90))
+- **enhanced:** new async boundary plugin design ([a4ac1ac](https://github.com/module-federation/core/commit/a4ac1acff974f74db6395c31134de14d9c344b6f))
+- **enhanced:** Refactor ContainerEntryDependency and ContainerEntryModule for better code readability and maintainability ([e93e7d2](https://github.com/module-federation/core/commit/e93e7d2fafe2e22f7d2c613095ce1900d7531f29))
+- **enhanced:** Rewrite Async Boundary based on bytedance version ([fa05dd6](https://github.com/module-federation/core/commit/fa05dd6bce2dd577b1e3fd84533459a04dbe195a))
+- **enhanced:** Support Async Mode and option ([3c33b8e](https://github.com/module-federation/core/commit/3c33b8ea3b483de5dcc3e5da9fb40c9826fdb7f7))
+- FederationModuleInfo Runtime Module ([50a1a0c](https://github.com/module-federation/core/commit/50a1a0c7a37bbe42ab6f2f5559b411567fee0fe9))
+- FederationModuleInfo Runtime Module ([7b09ef6](https://github.com/module-federation/core/commit/7b09ef6c0f4ee68a1b5caa5f021632059c522b8f))
+- fork module federation ([0ad7430](https://github.com/module-federation/core/commit/0ad7430f6170458a47144be392133b7b2fa1ade0))
+- implement Bytedance Infra Node Plugin ([82e6801](https://github.com/module-federation/core/commit/82e680157bbad68fa93800a69149c4c28652cfed))
+- implement Bytedance Infra Node Plugin ([97f283e](https://github.com/module-federation/core/commit/97f283e4746bf6f048ee27584adde5249c8e577c))
+- improve options logic in node federation plugin ([b69b70d](https://github.com/module-federation/core/commit/b69b70d200c63e3557089e8a0669fc43330c988c))
+- improved async init ([17b1419](https://github.com/module-federation/core/commit/17b1419ef31ec5661fa06b9f0c297e2771e2a86c))
+- improved async init ([bb19b07](https://github.com/module-federation/core/commit/bb19b07b5be1bbc28bd6b049ea7aea6510ad17a2))
+- improved async init ([ae3a450](https://github.com/module-federation/core/commit/ae3a4503ff9de86492b13029d6334b281ddd9493))
+- improved async init ([019694e](https://github.com/module-federation/core/commit/019694e55fe1f6bebfdab0701bf9087bf0034b8f))
+- native self forming node federation ([#1291](https://github.com/module-federation/core/issues/1291)) ([1dd5ed1](https://github.com/module-federation/core/commit/1dd5ed17c981e036336925e807203e94b58c36d6))
+- new actions, remove gpt integration ([370229e](https://github.com/module-federation/core/commit/370229e02cc352fcfaeaa0f3cf1f9f2d4966d1bb))
+- **node-remote:** Improve module federation runtime compatibility ([5eb2092](https://github.com/module-federation/core/commit/5eb209249c44d525c12eff5739bf23a93db08e4f))
+- **node:** auto set public path and improve chunk loading strategy #node_auto_public_path ([65989da](https://github.com/module-federation/core/commit/65989dab95ee2acee7ec9a5ab321921a278cd078))
+- **node:** enhance error handling and remote container registry in RemotePublicPathRuntimeModule (#bytedance) ([061285e](https://github.com/module-federation/core/commit/061285e0b6210baa1dd502dc94fd57fd9a8af822))
+- **NodeFederationPlugin:** assign remoteContainerRegistry to importMetaName ([ca33d98](https://github.com/module-federation/core/commit/ca33d98df63fdb8dac402b1cc0ec8bf95f9f1971))
+- **node:** remove unused import from DynamicFilesystemRuntimeModule ([f9787a9](https://github.com/module-federation/core/commit/f9787a9a67da936679db388e5c66e012e7452d8a))
+- remove old loadScript hack ([fbe19bc](https://github.com/module-federation/core/commit/fbe19bc76694c14b6a95c577669c2e8656ede1ba))
+- Static fallback to non auto public path ([3c58780](https://github.com/module-federation/core/commit/3c587809f1e936fba291eab3d7c790115be5102c))
+- support lazy compilation ([29c234c](https://github.com/module-federation/core/commit/29c234c14315e000acefc60d635ee486205ca83e))
+- support vmok conventions ([0501da8](https://github.com/module-federation/core/commit/0501da86eaaab6ea79a3397c2c683086cc591309))
+- support vmok conventions ([d53b586](https://github.com/module-federation/core/commit/d53b5867719eb7fff32bee2edd3255023d598f44))
+- Use enhanced Federation Plugin ([e021d66](https://github.com/module-federation/core/commit/e021d6667996962f154137d164bed13f53a6a135))
+- **utilities:** update DelegateModulesPlugin and tests (#node_auto_public_path) ([df8bb79](https://github.com/module-federation/core/commit/df8bb791c3fedef299cb15960546ff5ad9c665ef))
 
 # Changelog
 

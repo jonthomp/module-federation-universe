@@ -1,10 +1,16 @@
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Zackary Jackson @ScriptedAlchemy
+*/
 import { normalizeWebpackPath } from '@module-federation/sdk/normalize-webpack-path';
+import upath from 'upath';
+import path from 'path';
 import crypto from 'crypto';
 import { parseOptions } from '../options';
 import type { init } from '@module-federation/runtime-tools';
 import type webpack from 'webpack';
 import type RuntimeGlobals from 'webpack/lib/RuntimeGlobals';
-import type { ModuleFederationPluginOptions } from '../../../declarations/plugins/container/ModuleFederationPlugin';
+import type { moduleFederationPlugin } from '@module-federation/sdk';
 import { NormalizedRuntimeInitOptionsWithOutShared } from '../../../types/runtime';
 
 const extractUrlAndGlobal = require(
@@ -30,7 +36,7 @@ export function getFederationGlobalScope(
 }
 
 export function normalizeRuntimeInitOptionsWithOutShared(
-  options: ModuleFederationPluginOptions,
+  options: moduleFederationPlugin.ModuleFederationPluginOptions,
 ): NormalizedRuntimeInitOptionsWithOutShared {
   const parsedOptions = parseOptions(
     options.remotes || [],
@@ -49,6 +55,10 @@ export function normalizeRuntimeInitOptionsWithOutShared(
     const { external, shareScope } = remoteInfos;
     try {
       // only fit for remoteType: 'script'
+      const entry = external[0];
+      if (/\s/.test(entry)) {
+        return;
+      }
       const [url, globalName] = extractUrlAndGlobal(external[0]);
       remoteOptions.push({
         alias,
@@ -65,6 +75,7 @@ export function normalizeRuntimeInitOptionsWithOutShared(
   const initOptionsWithoutShared = {
     name: options.name!,
     remotes: remoteOptions,
+    shareStrategy: options.shareStrategy || 'version-first',
   };
 
   return initOptionsWithoutShared;
@@ -102,3 +113,6 @@ export function modifyEntry(options: ModifyEntryOptions): void {
 export function createHash(contents: string): string {
   return crypto.createHash('md5').update(contents).digest('hex');
 }
+
+export const normalizeToPosixPath = (p: string) =>
+  upath.normalizeSafe(path.normalize(p || ''));
